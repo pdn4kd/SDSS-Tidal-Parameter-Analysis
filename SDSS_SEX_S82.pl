@@ -6,8 +6,8 @@ use PDL;
 use Cwd;
 my $dir = getcwd;
 
-# change result.csv to your input file.
-open my $SEXtractor_parameters, '<', "result_S82.csv" or die "cannot open result.csv: $!";
+# result.csv is your input file.
+open my $SEXtractor_parameters, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
 my $input_positions = Text::CSV->new({'binary'=>1});
 $input_positions->column_names($input_positions->getline($SEXtractor_parameters));
 my $parameter_inputs = $input_positions->getline_hr_all($SEXtractor_parameters);

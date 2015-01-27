@@ -16,7 +16,7 @@ my $dir = getcwd;
  my @galaxy_fits = qw/1 2 4 a 14 aa/; #model fits we are checking
  
 #MASK_INPUT.csv will need to be changed on a per-image basis (at the moment?)
-open my $inGalPositions, '<', "result_DR7.csv" or die "cannot open result.csv: $!"; #Change the input to your input file with the galaxy coordinates
+open my $inGalPositions, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!"; #Change the input to your input file with the galaxy coordinates
 my $positions = Text::CSV->new({'binary'=>1});
 $positions->column_names($positions->getline($inGalPositions));
 my $position = $positions->getline_hr_all($inGalPositions);
@@ -25,7 +25,7 @@ my @nyuID = map {$_->{'col0'}} @{$position};
 my @ZPR = map {$_->{'Zero_point_r'}} @{$position};
 my @bkg = map {$_->{'global_background_r'}+1000} @{$position};
 
-open my $mgalfit_batch, '>', "GALFIT_MBATCH_DR7.sh" or die "cannot open GALFIT_BATCH.sh: $!";
+open my $mgalfit_batch, '>', "GALFIT_MBATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
 system("/usr/bin/perl $dir/BACKGROUND_REPLACER_DR7.pl");
 foreach my $galCount (0 .. scalar @nyuID - 1)
 {

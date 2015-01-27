@@ -18,7 +18,7 @@ $ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
 $ENV{'PGPLOT_DEV'} = '/xs';
 
 
-open my $inPositions, '<', "result_S82.csv" or die "cannot open result.csv: $!";
+open my $inPositions, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
 my $input_positions = Text::CSV->new({'binary'=>1});
 $input_positions->column_names($input_positions->getline($inPositions));
 my $position_inputs = $input_positions->getline_hr_all($inPositions);

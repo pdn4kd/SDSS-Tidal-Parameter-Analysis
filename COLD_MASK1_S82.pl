@@ -20,7 +20,7 @@ $ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
 $ENV{'PGPLOT_DEV'} = '/xs';
 
 
-open my $SEX, '<', "result_S82.csv" or die "cannot open result.csv: $!";
+open my $SEX, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
 my $inp = Text::CSV->new({'binary'=>1});
 $inp->column_names($inp->getline($SEX));
 my $parameter = $inp->getline_hr_all($SEX);
