@@ -1,3 +1,4 @@
+#! /usr/bin/perl
 use strict;
 use warnings;
 use PGPLOT;
@@ -59,6 +60,9 @@ my $DR7 = "_DR7";
 my $I = "psField";
 my $J = "psf";
 my $cal ='calibPhotm';
+my @band = qw/ u g r i z/; #sloan filters
+my $run0;
+my $field0;
 
 #example wgets
 #wget "http://das.sdss.org/imaging/5071/$_->{'rerun'}/objcs/1/fpAtlas-005071-1-0111.fit"
@@ -74,152 +78,47 @@ for (grep {$_->{'col0'}} @{$position_inputs})
 { 
 local $, = ' ';
 local $\ = "\n";
+foreach my $n (1.. 5) { #iterate over all 5 bands (u, g, r, i, z) Would be better if user-controlled.
 
-#PSF
-print $PSF_CUT "imcopy psf.$_->{'col0'}_DR7.fits[12:42,12:42] cpsf.$_->{'col0'}_DR7.fits";
-print $PSF_CUT "imarith cpsf.$_->{'col0'}_DR7.fits - 1000 scpsf.$_->{'col0'}_DR7.fits";
-
-	if ($_->{'run'} >= 1000 && $_->{'field'} >= 100)
-	{
-	#atlas image
-	print $cutouts 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-	print 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-
-	
-	#Object frame
-	print $Objects 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-	print 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-	
-	#PSF wget list
-	print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
-	print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
-	print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-00$_->{'run'}-$_->{'camcol'}.fit";	
-
-	#PSF image
-	print $PSFimages 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-	print 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-	}
-		
-else
-{
-if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
-		{
-		#atlas image
-		print $cutouts 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-		print 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-		
-		#Object frame
-		print $Objects 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-		print 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-		
-		#PSF wget list
-		print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
-		print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
-		print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-00$_->{'run'}-$_->{'camcol'}.fit";
-		
-		#PSF image
-		print $PSFimages 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-		print 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-		}
-		else
-		{
-			if ($_->{'run'} < 1000 && $_->{'run'} >= 100 && $_->{'field'} < 100 && $_->{'field'} > 10)
-			{
-			#atlas image
-			print $cutouts 'imcopy',$A.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-			print 'imcopy',$A.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-			
-			#Object frame
-			print $Objects 'imcopy',$O.'-'.'000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-			print 'imcopy',$O.'-'.'000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-			
-			#PSF wget list
-			print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
-			print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";	
-			print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-000$_->{'run'}-$_->{'camcol'}.fit";			
-		
-			#PSF image
-			print $PSFimages 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-			print 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';	
-			}
-			else
-			{
-			if ($_->{'run'} < 100 && $_->{'run'} >= 10 && $_->{'field'} < 1000 && $_->{'field'} >= 100)
-				{
-				#atlas image
-				print $cutouts 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-				print 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-				
-				#Object frame
-				print $Objects 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-				print 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-				
-				#PSF wget list
-				print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-0000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
-				print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-0000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
-				print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-0000$_->{'run'}-$_->{'camcol'}.fit";	
-				
-				#PSF image
-				print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-				print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';	
-				}
-				else{
-					if ($_->{'run'} < 100 && $_->{'run'} >= 10 && $_->{'field'} < 100 && $_->{'field'} >= 10)
-					{
-					#atlas image
-					print $cutouts 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-					print 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-				
-					#Object frame
-					print $Objects 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-					print 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-				
-					#PSF wget list
-					print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-0000$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
-					print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-0000$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";	
-					print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-0000$_->{'run'}-$_->{'camcol'}.fit";	
-					
-					#PSF image
-					print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-					print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';	
-					}
-					else
-					{
-						if ($_->{'run'} < 10 && $_->{'field'} < 10)
-						{
-						#atlas image
-						print $cutouts 'imcopy',$A.'-'.'00000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-						print 'imcopy',$A.'-'.'00000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-					
-						#Object frame
-						print $Objects 'imcopy',$O.'-'.'00000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-						print 'imcopy',$O.'-'.'00000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-					
-						#PSF wget list
-						print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
-						print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00000$_->{'run'}-$_->{'camcol'}-000$_->{'field'}.fit";
-						print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-00000$_->{'run'}-$_->{'camcol'}.fit";						
-						
-						#PSF image
-						print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-						print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';		
-						}	
-						else 
-						{
-						print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
-						print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-000$_->{'field'}.fit";
-						print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-000$_->{'run'}-$_->{'camcol'}.fit";
-						print $PSFimages 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-						print 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-						}
-					}
-				}		
-			}
-		}
+#padding 0s
+if ($_->{'run'} >= 1000) {
+	$run0 = "00";
+} elsif ($_->{'run'} >= 100) {
+	$run0 = "000";
+} elsif ($_->{'run'} >= 10) {
+	$run0 = "0000";
+} else { #run is 0 - 9
+	$run0 = "00000";
+}
+if ($_->{'field'} >= 100) {
+	$field0 = "0";
+} elsif ($_->{'field'} >= 10) {
+	$field0 = "00";
+} else { #field is 0 - 9
+	$field0 = "000";
 }
 
+	#PSF (multicolored)
+	print $PSF_CUT "imcopy psf.$_->{'col0'}$band[$n-1]_DR7.fits[12:42,12:42] cpsf.$_->{'col0'}$band[$n-1]_DR7.fits";
+	print $PSF_CUT "imarith cpsf.$_->{'col0'}$band[$n-1]_DR7.fits - 1000 scpsf.$_->{'col0'}$band[$n-1]_DR7.fits";
+
+	#atlas image
+	print $cutouts 'imcopy',$A.'-'.$run0.$_->{'run'}.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+	print 'imcopy',$A.'-'.$run0.$_->{'run'}.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+
+	#Object frame (multicolored)
+	print $Objects 'imcopy',$O.'-'.$run0.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+	print 'imcopy',$O.'-'.$run0.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+	
+	#PSF wget list
+	print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-$run0$_->{'run'}-$_->{'camcol'}-$field0$_->{'field'}.fit";
+	print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-run0$_->{'run'}-$_->{'camcol'}-$field0$_->{'field'}.fit";
+	print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-$run0$_->{'run'}-$_->{'camcol'}.fit";	
+
+	#PSF image (multicolored)
+	print $PSFimages 'read_PSF',$I.'-'.$run0.$_->{'run'}.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
+	print 'read_PSF',$I.'-'.$run0.$_->{'run'}.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
+	}
 }
 
 print "Files renamed\n";
-
-	

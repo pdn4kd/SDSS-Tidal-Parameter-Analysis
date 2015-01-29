@@ -79,10 +79,6 @@ for (grep {$_->{'col0'}} @{$position_inputs})
 	local $, = ' ';
 	local $\ = "\n";
 
-	#PSF cutout and subtraction
-	print $PSF_CUT "imcopy psf.$_->{'col0'}_S82.fits[12:42,12:42] cpsf.$_->{'col0'}_S82.fits";
-	print $PSF_CUT "imarith cpsf.$_->{'col0'}_S82.fits - 1000 scpsf.$_->{'col0'}_S82.fits";
-
 	#spacing and sizing is hard. This will fail in interesting ways if the naming changes.
 	if ($_->{'run'} == 106) {
 		$run0 = 100006;
@@ -102,18 +98,24 @@ for (grep {$_->{'col0'}} @{$position_inputs})
 	#example:
 	#run 3704, rerun 301, camcol 3, field 91
 	#http://data.sdss3.org/sas/dr9/boss/photoObj/frames/301/3704/3/frame-g-003704-3-0091.fits.bz2
-	foreach my $n (1.. 5) { #iterate over all 5 bands (u, g, r, i, z)
+	foreach my $n (1.. 5) { #iterate over all 5 bands (u, g, r, i, z) Would be better if user-controlled.
+		#PSF cutout and subtraction
+		print $PSF_CUT "imcopy psf.$_->{'col0'}$band[$n-1]_S82.fits[12:42,12:42] cpsf.$_->{'col0'}$band[$n-1]_S82.fits";
+		print $PSF_CUT "imarith cpsf.$_->{'col0'}$band[$n-1]_S82.fits - 1000 scpsf.$_->{'col0'}$band[$n-1]_S82.fits";
+
 		#Object frame
 		print $Objects 'imcopy',$O.'-'.$run0.'-'.$band[$n-1].$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits'; #Rename
 		print 'imcopy',$O.'-'.$run0.'-'.$band[$n-1].$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits';
 		print $Objects 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits'; #adding back light sky background to make comparable with DR7.
 		print 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits';
+
 		#PSF wget list
 		print $psflist "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
 		print "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
-	#PSF image
-		print $PSFimages 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$n,$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$n.$S82.'.'.'fits';
-		print 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$n,$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$n.$S82.'.'.'fits';
+
+		#PSF image
+		print $PSFimages 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$n,$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$band[$n-1].$S82.'.'.'fits';
+		print 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$n,$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$band[$n-1].$S82.'.'.'fits';
 	}
 }
 
