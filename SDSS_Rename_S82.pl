@@ -61,6 +61,7 @@ my $S82 = "_S82";
 my $I = "psField";
 my $J = "psf";
 my $cal ='calibPhotm';
+my @band = qw/ u g r i z/; # will work best if 1-indexed. Especially for the PSF
 
 #example wgets
 #wget "http://das.sdss.org/imaging/5071/$_->{'rerun'}/objcs/1/fpAtlas-005071-1-0111.fit"
@@ -101,18 +102,19 @@ for (grep {$_->{'col0'}} @{$position_inputs})
 	#example:
 	#run 3704, rerun 301, camcol 3, field 91
 	#http://data.sdss3.org/sas/dr9/boss/photoObj/frames/301/3704/3/frame-g-003704-3-0091.fits.bz2
-
-	#Object frame
-	print $Objects 'imcopy',$O.'-'.$run0.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits'; #Rename
-	print 'imcopy',$O.'-'.$run0.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits';
-	print $Objects 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits'; #adding back light sky background to make comparable with DR7.
-	print 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits';
-	#PSF wget list
-	print $psflist "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
-	print "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
+	foreach my $n (1.. 5) { #iterate over all 5 bands (u, g, r, i, z)
+		#Object frame
+		print $Objects 'imcopy',$O.'-'.$run0.'-'.$band[$n-1].$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits'; #Rename
+		print 'imcopy',$O.'-'.$run0.'-'.$band[$n-1].$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits';
+		print $Objects 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits'; #adding back light sky background to make comparable with DR7.
+		print 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits';
+		#PSF wget list
+		print $psflist "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
+		print "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
 	#PSF image
-	print $PSFimages 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$S82.'.'.'fits';
-	print 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$S82.'.'.'fits';
+		print $PSFimages 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$n,$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$n.$S82.'.'.'fits';
+		print 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$n,$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$n.$S82.'.'.'fits';
+	}
 }
 
 print "Files renamed\n";
