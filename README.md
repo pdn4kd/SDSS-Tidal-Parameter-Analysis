@@ -50,6 +50,24 @@ In general:
 	6) Mask
 	7) GALFIT
 	8) Tidal analysis
+	
+Exact order:
+	0) SQL queries
+	1) SDSS_Rename.pl*
+	2) Rename_Atlas.cl, Rename_Objects.cl (IRAF)*
+	3) wget -i sdss-wget.lis -P some_directory*
+	4) Rename_PSF.sh*
+	5) PSF.cl (IRAF) (processes PSFs)*
+	6) exec0.sh
+	7) cutouts in IRAF
+	8) exec1.sh
+	9) GALFIT_BATCH.sh
+	10) Critical_Tidal_Parameter.pl
+	10) noise.cl (IRAF)
+	12) GALFIT_MBATCH.sh
+	13) Tidal_Model_Tc.pl
+	*consolidate into 2(ish) steps.
+	
 
 Not scripts, but needed by them and associated software (IRAF, GALFIT, SExtractor)
 	default.nnw
