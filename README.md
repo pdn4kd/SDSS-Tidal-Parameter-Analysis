@@ -53,21 +53,16 @@ In general:
 	
 Exact order:
 	0) SQL queries
-	1) SDSS_Rename.pl*
-	2) Rename_Atlas.cl, Rename_Objects.cl (IRAF)*
-	3) wget -i sdss-wget.lis -P some_directory*
-	4) Rename_PSF.sh*
-	5) PSF.cl (IRAF) (processes PSFs)*
-	6) exec0.sh
-	7) cutouts in IRAF
-	8) exec1.sh
-	9) GALFIT_BATCH.sh
-	10) Critical_Tidal_Parameter.pl
-	10) noise.cl (IRAF)
-	12) GALFIT_MBATCH.sh
-	13) Tidal_Model_Tc.pl
-	*consolidate into 2(ish) steps.
-	
+	1) exec0.sh
+	2) Rename_Atlas.cl, Rename_Objects.cl (IRAF), PSF.cl (IRAF) (processes PSFs)
+	3) exec1.sh
+	4) cutouts in IRAF
+	5) exec2.sh
+	6) GALFIT_BATCH.sh
+	7) Critical_Tidal_Parameter.pl
+	8) noise.cl (IRAF)
+	9) GALFIT_MBATCH.sh
+	10) Tidal_Model_Tc.pl
 
 Not scripts, but needed by them and associated software (IRAF, GALFIT, SExtractor)
 	default.nnw
