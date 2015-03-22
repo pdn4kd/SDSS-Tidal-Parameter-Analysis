@@ -69,3 +69,5 @@ Not scripts, but needed by them and associated software (IRAF, GALFIT, SExtracto
 	test.param
 	tophat_40_5x5.conv
 	read_PSF
+	
+Limitations of the scripts matching/cuts, and galfits fitting abilities result in a leaky pipeline. Not all images will make it through to the final results.
