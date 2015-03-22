@@ -34,7 +34,7 @@ print $T_plot "ID,Fit_Type,Tp,Tm,Tc\n";
 
 foreach my $posCount (0 .. scalar @nyuID - 1) {
 foreach my $galaxy_fits (@galaxy_fits) { #iterate over all fit types
-if (-e "mp${nyuID[$posCount]}_DR7.model_$galaxy_fits.fits") { #Does the output image actually exist?
+if ((-e "mp${nyuID[$posCount]}_DR7.model_$galaxy_fits.fits") && (-e "p${nyuID[$posCount]}_DR7.model_$galaxy_fits.fits")) { #Successful modelling?
 print "p${nyuID[$posCount]}_DR7.fits\n";
 
 my $Good_values = rfits("background.p${nyuID[$posCount]}_DR7.fits");

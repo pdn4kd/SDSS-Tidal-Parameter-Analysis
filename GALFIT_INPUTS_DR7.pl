@@ -113,7 +113,7 @@ ___end___
 print $mgalfit1  <<___end___;
 ================================================================================
 # IMAGE and GALFIT CONTROL PARAMETERS
-A) bmodel.p$nyuID[$galCount]_DR7.fits      # Input data image (FITS file)
+A) bmodel.p$nyuID[$galCount]_DR7_1.fits      # Input data image (FITS file)
 B) mp$nyuID[$galCount]_DR7.model_1.fits      # Output data image block
 C) #                   # Sigma image name (made from data if blank or "none") 
 D) scpsf.$nyuID[$galCount]_DR7.fits           # Input PSF image and (optional) diffusion kernel
@@ -184,7 +184,7 @@ ___end___
 print $mgalfit2  <<___end___;
 ================================================================================
 # IMAGE and GALFIT CONTROL PARAMETERS
-A) bmodel.p$nyuID[$galCount]_DR7.fits      # Input data image (FITS file)
+A) bmodel.p$nyuID[$galCount]_DR7_2.fits      # Input data image (FITS file)
 B) mp$nyuID[$galCount]_DR7.model_2.fits      # Output data image block
 C) #                   # Sigma image name (made from data if blank or "none") 
 D) scpsf.$nyuID[$galCount]_DR7.fits           # Input PSF image and (optional) diffusion kernel
@@ -255,7 +255,7 @@ ___end___
 print $mgalfit4  <<___end___;
 ================================================================================
 # IMAGE and GALFIT CONTROL PARAMETERS
-A) bmodel.p$nyuID[$galCount]_DR7.fits      # Input data image (FITS file)
+A) bmodel.p$nyuID[$galCount]_DR7_4.fits      # Input data image (FITS file)
 B) mp$nyuID[$galCount]_DR7.model_4.fits      # Output data image block
 C) #                   # Sigma image name (made from data if blank or "none") 
 D) scpsf.$nyuID[$galCount]_DR7.fits           # Input PSF image and (optional) diffusion kernel
@@ -325,7 +325,7 @@ ___end___
 print $mgalfita  <<___end___;
 ================================================================================
 # IMAGE and GALFIT CONTROL PARAMETERS
-A) bmodel.p$nyuID[$galCount]_DR7.fits      # Input data image (FITS file)
+A) bmodel.p$nyuID[$galCount]_DR7_a.fits      # Input data image (FITS file)
 B) mp$nyuID[$galCount]_DR7.model_a.fits      # Output data image block
 C) #                   # Sigma image name (made from data if blank or "none") 
 D) scpsf.$nyuID[$galCount]_DR7.fits           # Input PSF image and (optional) diffusion kernel
@@ -396,7 +396,7 @@ ___end___
 print $mgalfit14  <<___end___;
 ================================================================================
 # IMAGE and GALFIT CONTROL PARAMETERS
-A) bmodel.p$nyuID[$galCount]_DR7.fits      # Input data image (FITS file)
+A) bmodel.p$nyuID[$galCount]_DR7_14.fits      # Input data image (FITS file)
 B) mp$nyuID[$galCount]_DR7.model_14.fits      # Output data image block
 C) #                   # Sigma image name (made from data if blank or "none") 
 D) scpsf.$nyuID[$galCount]_DR7.fits           # Input PSF image and (optional) diffusion kernel
