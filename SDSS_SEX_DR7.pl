@@ -1,40 +1,24 @@
+#!/usr/bin/perl
 use strict;
 use warnings;
-use PGPLOT;
+
 use Text::CSV;
-use PDL;
-use Cwd;
-my $dir = getcwd;
 
-# result.csv is your input file.
-open my $SEXtractor_parameters, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!";
-my $input_positions = Text::CSV->new({'binary'=>1});
-$input_positions->column_names($input_positions->getline($SEXtractor_parameters));
-my $parameter_inputs = $input_positions->getline_hr_all($SEXtractor_parameters);
-#ID,pixel_scale,FWHM,Zero_point
+open my $input, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!";
+my $csv = Text::CSV->new({ binary => 1 });
+$csv->column_names( $csv->getline($input) );
 
-my @nyuID = map {$_->{'col0'}} @{$parameter_inputs};
-if (!defined($nyuID[0])) {
-	@nyuID = map {$_->{'name'}} @{$parameter_inputs};
-}
-my @Zp_r = map {$_->{'Zero_point_r'}} @{$parameter_inputs};
-my @GAIN_r = map {$_->{'gain_r'}} @{$parameter_inputs};
+open my $aper_all, '>', 'aper_all_DR7.sh' or die "cannot open aper_all_DR7.sh: $!";
 
-open my $aper_all, '>', "aper_all_DR7.sh" or die "cannot open aper_all.sh $!";
+while (my $row = $csv->getline_hr($input)) {
+  my $nyuID = $row->{col0} || $row->{name};
 
-foreach my $posCount (0 .. @nyuID - 1)
-#scalar @nyuID - 1
-{
-	open my $SEXaper_r, '>', "$nyuID[$posCount]_DR7.aperture.sex" or die "cannot open $nyuID[$posCount].aperture.sex $!";
+  open my $aper, '>', "${nyuID}_DR7.aperture.sex" or die "Cannot open ${nyuID}_DR7.aperture.sex: $!";
 
-my @Zp = map {$_->{'Zero_point_r'}} @{$parameter_inputs};
-my @GAIN_r = map {$_->{'gain_r'}} @{$parameter_inputs};
-
-
-print $SEXaper_r <<___end___;
+  print $aper <<___end___;
 #-------------------------------- Catalog ------------------------------------
  
-CATALOG_NAME     $nyuID[$posCount]_DR7.aper.cat  # name of the output catalog
+CATALOG_NAME     ${nyuID}_DR7.aper.cat  # name of the output catalog
 CATALOG_TYPE     ASCII_HEAD     # NONE,ASCII,ASCII_HEAD, ASCII_SKYCAT,
                                 # ASCII_VOTABLE, FITS_1.0 or FITS_LDAC
 PARAMETERS_NAME  test1.param  # name of the file containing catalog contents
@@ -66,10 +50,10 @@ PHOT_PETROPARAMS 2.0, 3.5       # MAG_PETRO parameters: <Petrosian_fact>,
                                 # <min_radius>
  
 SATUR_LEVEL      55000.0        # level (in ADUs) at which arises saturation
-MAG_ZEROPOINT    $Zp[$posCount]         # magnitude zero-point
+MAG_ZEROPOINT    $row->{Zero_point_r}         # magnitude zero-point
 MAG_GAMMA        4.0            # gamma of emulsion (for photographic scans)
-GAIN             $GAIN_r[$posCount]            # detector gain in e-/ADU
-PIXEL_SCALE      0.3961   		# size of pixel in arcsec (0=use FITS WCS info)
+GAIN             $row->{gain_r}            # detector gain in e-/ADU
+PIXEL_SCALE      0.3961       # size of pixel in arcsec (0=use FITS WCS info)
  
 #------------------------- Star/Galaxy Separation ----------------------------
  
@@ -89,7 +73,7 @@ CHECKIMAGE_TYPE  APERTURES   # can be NONE, BACKGROUND, BACKGROUND_RMS,
                                 # MINIBACKGROUND, MINIBACK_RMS, -BACKGROUND,
                                 # FILTERED, OBJECTS, -OBJECTS, SEGMENTATION,
                                 # or APERTURES
-CHECKIMAGE_NAME  $nyuID[$posCount]_DR7.aper.fits     # Filename for the check-image
+CHECKIMAGE_NAME  ${nyuID}_DR7.aper.fits     # Filename for the check-image
  
 #--------------------- Memory (change with caution!) -------------------------
  
@@ -102,13 +86,8 @@ MEMORY_BUFSIZE   1024           # number of lines in buffer
 VERBOSE_TYPE     NORMAL         # can be QUIET, NORMAL or FULL
 WRITE_XML        N              # Write XML file (Y/N)?
 XML_NAME         sex.xml        # Filename for XML output
-
 ___end___
 
-print $aper_all "sex $nyuID[$posCount]_DR7.fits -c $nyuID[$posCount]_DR7.aperture.sex \n";
-print "sex $nyuID[$posCount]_DR7.fits -c $nyuID[$posCount]_DR7.aperture.sex \n";
-#system("/usr/local/bin/sex $dir/$nyuID[$posCount]_DR7.fits -c $dir/$nyuID[$posCount]_DR7.aperture.sex"); #run SEXtractor
-#system("/usr/bin/perl $dir/APER_To_CSV.pl");
-#system("/usr/bin/perl $dir/SDSS_POSTAGE_STAMPS_DR7.pl"); #still have to cutout with IRAF
+  print $aper_all "sex ${nyuID}_DR7.fits -c ${nyuID}_DR7.aperture.sex \n";
+  print "sex ${nyuID}_DR7.fits -c ${nyuID}_DR7.aperture.sex \n";
 }
-print "Finished\n";
