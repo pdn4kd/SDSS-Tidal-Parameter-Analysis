@@ -11,7 +11,7 @@ $csv->column_names( $csv->getline($input) );
 open my $aper_all, '>', 'aper_all_S82.sh' or die "cannot open aper_all_S82.sh: $!";
 
 while (my $row = $csv->getline_hr($input)) {
-  my $nyuID = $row->{col0} || $row->{name};
+  my $nyuID = $row->{col0};
 
   open my $aper, '>', "${nyuID}_S82.aperture.sex" or die "Cannot open ${nyuID}_S82.aperture.sex: $!";
 
