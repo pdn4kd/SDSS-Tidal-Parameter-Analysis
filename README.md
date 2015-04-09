@@ -2,6 +2,7 @@
 Finding tidal parameters of SDSS galaxies via sérsic fits. Derived from Xia's code.
 
 tophat_4.0_5x5.conv, default.nnw, and test1.param provide additional information the scripts need to run, but you may be able to swap them out, depending on available libraries. read_PSF is also required, but not included. Download/compile from SDSS.
+Perl dependencies: PGPlot Text::CSV PDL Math::Trig (semi-required: Cwd, Statistics, List, Astro::FITS:Header)
 
 Specific workflow:
 
