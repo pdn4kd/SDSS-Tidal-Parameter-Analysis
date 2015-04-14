@@ -3,6 +3,7 @@ Finding tidal parameters of SDSS galaxies via sérsic fits. Derived from Xia's c
 
 tophat_4.0_5x5.conv, default.nnw, and test1.param provide additional information the scripts need to run, but you may be able to swap them out, depending on available libraries. read_PSF is also required, but not included. Download/compile from SDSS.
 Perl dependencies: PGPlot Text::CSV PDL Math::Trig (semi-required: Cwd, Statistics, List, Astro::FITS:Header)
+Additional required files: read_PSF, GALFIT, SExtractor
 
 Specific workflow:
 
@@ -84,4 +85,4 @@ JOIN #upload u ON u.up_id = x.up_id
 JOIN PhotoObjAll p ON x.objID=p.objID  
 JOIN Field f ON p.fieldID = f.fieldID  
 ORDER BY x.up_id  
-(for Stripe 82, add WHERE (p.run = 106 or p.run = 206) and (where p.type = 3) )
+(for Stripe 82, add WHERE (p.run = 106 or p.run = 206) and (p.type = 3) )

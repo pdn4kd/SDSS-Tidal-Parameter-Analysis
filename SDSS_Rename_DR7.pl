@@ -1,33 +1,12 @@
 use strict;
 use warnings;
-use PGPLOT;
 use Text::CSV;
-use Cwd qw(cwd);
-#use String::Scanf;
-use Statistics::OLS;
-use PDL;
-use PDL::Graphics2D;
-use PDL::Constants qw(PI);
-use PDL::Fit::Polynomial qw(fitpoly1d);
-$ENV{PGPLOT_FOREGROUND} = "black";
-$ENV{PGPLOT_BACKGROUND} = "white";
 
 #This script generates:
 #renaming IRAF scripts for SDSS FpC image, atlas files
 #renaming shell script for PSFs
 #PSF modifying script for IRAF
 #wget lists for downloading PSFs and calibration files
-
-#opendir my $fdDir, cwd() or die "Unable to open cwd: $!\n"; #opens current working directory 
-#
-#my $ins;
-#while (my $file = readdir $fdDir)
-#	{
-#	chomp $file; 
-#	next unless $file =~ m/^FVnyu(.+)\.aperture\.csv$/; # read only files that began with m/^cnyu\ and end with .csv$/
-#	$ins = $1;
-##	print " FVnyu$ins.aperture.csv\n";
-#	}
 
 #SDSS_Positions_Size.csv can be any SDSS SQL output that contains name/name/ID, x, y, run#, field#, camcol
 #Here, a generic CSV is assumed.
