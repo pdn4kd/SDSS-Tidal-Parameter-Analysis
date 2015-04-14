@@ -1,17 +1,6 @@
 use strict;
 use warnings;
-use PGPLOT;
 use Text::CSV;
-use Cwd qw(cwd);
-#use String::Scanf;
-use Statistics::OLS;
-use PDL;
-use PDL::Graphics2D;
-use PDL::Constants qw(PI);
-use PDL::Fit::Polynomial qw(fitpoly1d);
-$ENV{PGPLOT_FOREGROUND} = "black";
-$ENV{PGPLOT_BACKGROUND} = "white";
-
 
 # This script is used to take SDSS x and y outputs and use them as inputs
 # for cutting out postage stamps.
@@ -24,8 +13,6 @@ my $position_inputs = $input_positions->getline_hr_all($inPositions);
 my @nyuID = map {$_->{'col0'}} @{$position_inputs};
 my @px = map {$_->{'imgx'}} @{$position_inputs};
 my @py = map {$_->{'imgy'}} @{$position_inputs};
-#my @cx = map {$_->{'Xc'}} @{$position_inputs};
-#my @cy = map {$_->{'Yc'}} @{$position_inputs};
 
 open my $coutouts, '>', "Galaxy_cutouts_S82.cl" or die "cannot open Galaxy_cutouts.cl: $!";
 

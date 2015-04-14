@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-
 use Text::CSV;
 
 open my $input, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
