@@ -1,3 +1,4 @@
+#! usr/bin/perl
 use strict;
 use warnings;
 use PGPLOT;
@@ -10,10 +11,7 @@ $ENV{'PGPLOT_DEV'} = '/xs';
 use Text::CSV;
 use PDL::Image2D;
 #use Astro::IRAF::CL;
-use Cwd qw(cwd);
 #use PDL::GSL::RNG;
-use Cwd;
-my $dir = getcwd;
  
 #Prints nyuID, run type, Tp, Tm, Tc to a CSV
 #Displays graphs of all galaxies' deviations
