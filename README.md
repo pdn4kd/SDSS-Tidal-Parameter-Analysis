@@ -77,13 +77,14 @@ Exact order:
 
 Limitations of the scripts matching/cuts, and galfits fitting abilities result in a leaky pipeline. Not all images will make it through to the final results.
 
-## Example query:  
+## Example query:
+```
 SELECT  
-p.objID, p.ra, p.dec, p.run, p.rerun, p.camcol, p.field,
-dbo.fPhotoTypeN(p.type) as type, p.modelMag_g, p.modelMagErr_g, p.modelMag_r,p.modelMagErr_r , p.petroMag_g, p.petroMagErr_g,p.petroMag_r, p.petroMagErr_r, p.colc as imgx, p.rowc as imgy, (p.petroR50_r /0.3961) as R50_r, (p.petroR90_r / 0.3961) as R90_r, (p.petroR90_r/p.petroR50_r) as conc_r,f.gain_r,(-(f.aa_r + f.bb_r + f.kk_r*f.airmass_r)+4.32912) as Zero_point_r, ( power ( 10,( ( ( -2.5*log10 ( f.skyFrames_r*power ( 0.3961,2) ) ) + f.aa_r + f.kk_r * f.airmass_r) / -2.5 ) ) * 53.9 ) as global_background_r, p.isoA_g, p.isoA_r, p.isoA_i, p.isoB_g, p.isoB_r, p.isoB_i, p.isoPhi_g, p.isoPhi_r, p.isoPhi_i  
+p.objID, p.ra, p.dec, p.run, p.rerun, p.camcol, p.field,dbo.fPhotoTypeN(p.type) as type, p.modelMag_g, p.modelMagErr_g, p.modelMag_r,p.modelMagErr_r, p.petroMag_g, p.petroMagErr_g,p.petroMag_r, p.petroMagErr_r, p.colc as imgx, p.rowc as imgy, (p.petroR50_r /0.3961) as R50_r, (p.petroR90_r / 0.3961) as R90_r, (p.petroR90_r/p.petroR50_r) as conc_r,f.gain_r,(-(f.aa_r + f.bb_r + f.kk_r*f.airmass_r)+4.32912) as Zero_point_r, ( power( 10,( ( ( -2.5*log10( f.skyFrames_r*power( 0.3961,2) ) ) + f.aa_r + f.kk_r * f.airmass_r) / -2.5 ) ) * 53.9 ) as global_background_r, p.isoA_g, p.isoA_r, p.isoA_i, p.isoB_g, p.isoB_r, p.isoB_i, p.isoPhi_g, p.isoPhi_r, p.isoPhi_i  
 FROM #x x  
 JOIN #upload u ON u.up_id = x.up_id  
 JOIN PhotoObjAll p ON x.objID=p.objID  
 JOIN Field f ON p.fieldID = f.fieldID  
-ORDER BY x.up_id  
+ORDER BY x.up_id
+```
 (for Stripe 82, add WHERE (p.run = 106 or p.run = 206) and (p.type = 3) )
