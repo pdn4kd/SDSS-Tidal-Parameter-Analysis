@@ -1,16 +1,16 @@
 use strict;
 use warnings;
-use PGPLOT;
 use Text::CSV;
 use Cwd qw(cwd);
 #use String::Scanf;
 use Statistics::OLS;
 use PDL;
-use PDL::Graphics2D;
+#use PDL::Graphics2D;
 use PDL::Constants qw(PI);
 use PDL::Fit::Polynomial qw(fitpoly1d);
-$ENV{PGPLOT_FOREGROUND} = "black";
-$ENV{PGPLOT_BACKGROUND} = "white";
+#use PGPLOT;
+#$ENV{PGPLOT_FOREGROUND} = "black";
+#$ENV{PGPLOT_BACKGROUND} = "white";
 
 
 # This script is used to take SDSS x and y outputs and use them as inputs
@@ -48,8 +48,8 @@ foreach my $posCount (0 .. scalar @nyuID - 1)
 	
 	my @Xp_image; # this will find the galaxies using the x-pixel coordinates of the parent
 	my @Yp_image; # this will find the galaxies using the y coordinates of the parent
-	my @Xc_image; # this will find the galaxies using the x-pixel coordinates of the companion
-	my @Yc_image; # this will find the galaxies using the y coordinates of the companion
+	# my @Xc_image; # this will find the galaxies using the x-pixel coordinates of the companion
+	# my @Yc_image; # this will find the galaxies using the y coordinates of the companion
 	
 	#parent cutout
 	my $Xp_cutout;	
@@ -61,31 +61,31 @@ foreach my $posCount (0 .. scalar @nyuID - 1)
 	my $Yg_p_cutmax;
 	
 	#companion cutout
-	my $Xc_cutout;	
-	my $Yc_cutout;
-	#imcopy cutout
-	my $Xg_c_cutmin;
-	my $Xg_c_cutmax;
-	my $Yg_c_cutmin;
-	my $Yg_c_cutmax;
+	# my $Xc_cutout;	
+	# my $Yc_cutout;
+	# imcopy cutout
+	# my $Xg_c_cutmin;
+	# my $Xg_c_cutmax;
+	# my $Yg_c_cutmin;
+	# my $Yg_c_cutmax;
 	#Distance parameters
-	my $Distance_X; #Xp - Xc
-	my $Distance_Y;	#Yp - Yc
-	my $total_X; #Xp + Xc
-	my $total_Y; #Yp + Yc
+	# my $Distance_X; #Xp - Xc
+	# my $Distance_Y;	#Yp - Yc
+	# my $total_X; #Xp + Xc
+	# my $total_Y; #Yp + Yc
 	
 	#total cutout size
 	my $Xb;	
 	my $Yb;
 	my $center;
 	my @a_p; # semi-major axis parent galaxies.
-	my @a_c; # semi-major axis companion galaxies.
+	# my @a_c; # semi-major axis companion galaxies.
 	my @E_p; # ellipticity of parent galaxies.
-	my @E_c; # ellipticity of companion galaxies.
+	# my @E_c; # ellipticity of companion galaxies.
 	my @theta_p;
-	my @theta_c;
+	# my @theta_c;
 	my @Kron_p;
-	my @Kron_c;
+	# my @Kron_c;
 	
 	#This parameters will deal with the cutout size of the box about the center
 	my $Xcenter_cutmin;

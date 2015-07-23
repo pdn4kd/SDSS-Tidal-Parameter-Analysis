@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Text::CSV;
+use PDL::Constants qw(PI);
 
 # This script is used to take SDSS x and y outputs and use them as inputs
 # for cutting out postage stamps.
@@ -35,8 +36,8 @@ foreach my $posCount (0 .. scalar @nyuID - 1)
 	
 	my @Xp_image; # this will find the galaxies using the x-pixel coordinates of the parent
 	my @Yp_image; # this will find the galaxies using the y coordinates of the parent
-	my @Xc_image; # this will find the galaxies using the x-pixel coordinates of the companion
-	my @Yc_image; # this will find the galaxies using the y coordinates of the companion
+	# my @Xc_image; # this will find the galaxies using the x-pixel coordinates of the companion
+	# my @Yc_image; # this will find the galaxies using the y coordinates of the companion
 	
 	#parent cutout
 	my $Xp_cutout;	
@@ -48,13 +49,13 @@ foreach my $posCount (0 .. scalar @nyuID - 1)
 	my $Yg_p_cutmax;
 	
 	#companion cutout
-	my $Xc_cutout;	
-	my $Yc_cutout;
+	# my $Xc_cutout;	
+	# my $Yc_cutout;
 	#imcopy cutout
-	my $Xg_c_cutmin;
-	my $Xg_c_cutmax;
-	my $Yg_c_cutmin;
-	my $Yg_c_cutmax;
+	# my $Xg_c_cutmin;
+	# my $Xg_c_cutmax;
+	# my $Yg_c_cutmin;
+	# my $Yg_c_cutmax;
 	#Distance parameters
 	my $Distance_X; #Xp - Xc
 	my $Distance_Y;	#Yp - Yc
