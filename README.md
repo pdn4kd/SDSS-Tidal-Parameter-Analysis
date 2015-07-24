@@ -48,7 +48,7 @@ Masking/GALFIT setup
 * GALFIT_BATCH.sh
 Tp
 * Critical_Tidal_Parameter.pl
-* NOISE.cl (IRAF)
+* NOISE.cl (IRAF, must be in artdata for mknoise to work)
 * GALFIT_MBATCH.sh
 * Tidal_Model_Tc.pl
 
