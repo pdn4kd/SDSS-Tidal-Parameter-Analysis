@@ -1,3 +1,4 @@
+#! /usr/bin/perl
 use strict;
 use warnings;
 #use PGPLOT;
@@ -29,8 +30,8 @@ my @bkg = map {$_->{'global_background_r'}+1000} @{$position};
 open my $galfit_batch, '>', "GALFIT_BATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
 open my $mgalfit_batch, '>', "GALFIT_MBATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
 system("/usr/bin/perl $dir/BACKGROUND_REPLACER_DR7.pl");
-foreach my $galCount (0 .. scalar @nyuID - 1)
-{
+foreach my $galCount (0 .. scalar @nyuID - 1) {
+if ((-e "p${nyuID[$galCount]}_DR7.fits") && (-e "p${nyuID[$galCount]}_DR7.aper.csv")) {
 my $Good_values = rfits("background.p$nyuID[$galCount]_DR7.fits");
 my $average = sprintf("%.3f",(avg($Good_values)));
 print $average,"\n";
@@ -736,5 +737,5 @@ system ("rm $dir/galfit.* ");
 #print "Finished p$nyuID[$galCount].fits\n";	
 
 }
-
+}
 print "Done";

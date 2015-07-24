@@ -29,7 +29,7 @@ my @nyuID = map {$_->{'col0'}} @{$parameter};
 
 foreach my $posCount (0 .. scalar @nyuID - 1)
 {
-	
+if (-e "p${nyuID[$posCount]}_DR7.fits") {	
 print "p${nyuID[$posCount]}_DR7.fits\n";
 
 #NEW MASK USING SEXTRACTOR
@@ -137,5 +137,5 @@ $Un_masked->sethdr($image->hdr);
 $Un_masked->wfits("MASKED.p${nyuID[$posCount]}_DR7.fits");
 my $UMmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
 $UMmask_image->fits_imag($Un_masked);
-
+}
 }

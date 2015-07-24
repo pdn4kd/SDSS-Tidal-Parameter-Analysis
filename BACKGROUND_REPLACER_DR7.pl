@@ -25,8 +25,8 @@ my $position_inputs = $input_positions->getline_hr_all($inPositions);
 
 my @nyuID = map {$_->{'col0'}} @{$position_inputs};
 
-foreach my $posCount (0 .. scalar @nyuID - 1)
-{
+foreach my $posCount (0 .. scalar @nyuID - 1) {
+if ((-e "p${nyuID[$posCount]}_DR7.fits") && (-e "p${nyuID[$posCount]}_DR7.aper.csv")) {
 print "p${nyuID[$posCount]}_DR7.aper.csv","\n";
 open my $inPositions_1, '<', "p${nyuID[$posCount]}_DR7.aper.csv" or die "cannot open p${nyuID[$posCount]}_DR7.aper.csv: $!";
 
@@ -134,5 +134,5 @@ print $average,"\n";
 ##Display background image
 my $backimage = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
 $backimage->fits_imag($Good_values);
-
+}
 }
