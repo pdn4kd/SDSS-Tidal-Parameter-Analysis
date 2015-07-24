@@ -27,8 +27,8 @@ my $parameter = $inp->getline_hr_all($SEX);
 
 my @nyuID = map {$_->{'col0'}} @{$parameter};
 
-foreach my $posCount (0 .. scalar @nyuID - 1)
-{
+foreach my $posCount (0 .. scalar @nyuID - 1) {
+if (-e "p${nyuID[$posCount]}_S82.fits") {
 	
 print "p${nyuID[$posCount]}_S82.fits\n";
 
@@ -137,5 +137,5 @@ $Un_masked->sethdr($image->hdr);
 $Un_masked->wfits("MASKED.p${nyuID[$posCount]}_S82.fits");
 my $UMmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
 $UMmask_image->fits_imag($Un_masked);
-
+}
 }

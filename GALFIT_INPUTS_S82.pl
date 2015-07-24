@@ -29,8 +29,8 @@ my @bkg = map {$_->{'global_background_r'}+1000} @{$position};
 open my $galfit_batch, '>', "GALFIT_BATCH_S82.sh" or die "cannot open GALFIT_BATCH_S82.sh: $!";
 open my $mgalfit_batch, '>', "GALFIT_MBATCH_S82.sh" or die "cannot open GALFIT_BATCH_S82.sh: $!";
 system("/usr/bin/perl $dir/BACKGROUND_REPLACER_S82.pl");
-foreach my $galCount (0 .. scalar @nyuID - 1)
-{
+foreach my $galCount (0 .. scalar @nyuID - 1) {
+if (-e "p${nyuID[$galCount]}_S82.fits") {
 my $Good_values = rfits("background.p$nyuID[$galCount]_S82.fits");
 my $average = sprintf("%.3f",(avg($Good_values)));
 print $average,"\n";
@@ -729,7 +729,7 @@ print $mgalfit14 <<___end___;
  Z) 0                      #  Skip this model in output image?  (yes=1, no=0)
 ================================================================================
 ___end___
-
+}
 }
 system ("rm $dir/galfit.* ");
 #system ("/usr/local/bin/galfit $dir/p$nyuID[$galCount]_S82.galfit_1");
