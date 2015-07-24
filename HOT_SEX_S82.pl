@@ -1,8 +1,6 @@
 use strict;
 use warnings;
-use PGPLOT;
 use Text::CSV;
-use PDL;
 
 # change result.csv to your input file.
 open my $SEXtractor_parameters, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";

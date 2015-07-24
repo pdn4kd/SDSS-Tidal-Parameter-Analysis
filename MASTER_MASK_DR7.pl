@@ -46,8 +46,8 @@ print $DELMAG "ID,NUMBER,MAG,MAGErr,petro_mag,petro_magErr,model_mag,model_magEr
 
 my $gKron; #This is parameter will be assigned with the orginal galaxy Kron radius multipled by 2.5
 foreach my $posCount (0 .. scalar @nyuID - 1) #posCount is counting lines from the result.csv with contains all the SDSS SQL parameters
-#foreach my $posCount (0 .. 0) #posCount is counting lines from the result.csv with contains all the SDSS SQL parameters
 {
+if (-e "p${nyuID[$posCount]}_DR7.fits") {
 open my $GALFIT_input, '>', "p${nyuID[$posCount]}_DR7.galfit_input.csv" or die "cannot open p${nyuID[$posCount]}_DR7.galfit_input.csv: $!"; #GALFIt values for objects
 print $GALFIT_input "NUMBER,MAG,X,Y,Re,n,THETA,ba,fit,sizex,sizey,type\n"; #header for galfit inputs
 
@@ -272,7 +272,7 @@ $j=0;
 
 		}	# Close ALLAPER
 	} #Close Search condition for Kron radius 
-
+}
 } #Close All
 
 system("/usr/bin/perl $dir/COLD_MASK1_DR7.pl");
