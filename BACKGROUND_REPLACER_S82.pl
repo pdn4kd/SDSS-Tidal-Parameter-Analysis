@@ -1,9 +1,9 @@
 use strict;
 use warnings;
-use PGPLOT;
+#iuse PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
 use PDL::IO::FITS;;
 use Text::CSV;
@@ -14,8 +14,8 @@ use PDL::Graphics::IIS;
 my $deg2rad = pi/180.;
 use PDL::IO::Misc;
 use PDL::Transform;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 
 
 open my $inPositions, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
@@ -46,8 +46,8 @@ my @THETA = map {$_->{'THETA_IMAGE'}} @{$inputs_1};
 #Good image from reduction
 my $image = rfits("p${nyuID[$posCount]}_S82.fits"); 
 
-my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$normal->fits_imag($image);
+#my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$normal->fits_imag($image);
 my @dim = dims($image);
 print join(',',@dim),"\n";
 #join(',',@dim)
@@ -107,8 +107,8 @@ $ellipse_2->wfits("Full_mask.p${nyuID[$posCount]}_S82_1b.fits");
 
 #displ masked image
 my $Mimage = rfits("Full_mask.p${nyuID[$posCount]}_S82_1b.fits");
-my $mask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$mask_image->fits_imag($Mimage,0,1);
+#my $mask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$mask_image->fits_imag($Mimage,0,1);
 
 #NEW unmasked image
 my $Full_masked_image = $image * $Mimage;
@@ -116,8 +116,8 @@ $Full_masked_image->sethdr($image->hdr);
 
 #Displ fully masked image
 $Full_masked_image->wfits("Full_masked.p${nyuID[$posCount]}_S82.fits");
-my $Full_masked = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$Full_masked->fits_imag($Full_masked_image);
+#my $Full_masked = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$Full_masked->fits_imag($Full_masked_image);
 
 #Make a gauss random background generated image from the fully masked image
 
@@ -132,7 +132,7 @@ my $average = avg($Good_values);
 print $average,"\n";
 
 ##Display background image
-my $backimage = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$backimage->fits_imag($Good_values);
+#my $backimage = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$backimage->fits_imag($Good_values);
 }
 }

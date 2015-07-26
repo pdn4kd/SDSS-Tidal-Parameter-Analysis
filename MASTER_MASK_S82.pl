@@ -1,10 +1,10 @@
 #! /usr/bin/perl
 use strict;
 use warnings;
-use PGPLOT;
+#use PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
 use PDL::IO::FITS;;
 use Text::CSV;
@@ -15,8 +15,8 @@ use PDL::Graphics::IIS;
 my $deg2rad = pi/180.;
 use PDL::IO::Misc;
 use PDL::Transform;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 
 use Cwd;
 
@@ -116,8 +116,8 @@ print $Tp_mask "NUMBER,X_IMAGE,Y_IMAGE,A_IMAGE,B_IMAGE,THETA_IMAGE,KRON_RADIUS\n
 				my @ba = map {$_->{'B_IMAGE'}/$_->{'A_IMAGE'}} @{$parameter3};
 				my $ba_rounded;
 				my $image = rfits("p${nyuID[$posCount]}_S82.fits"); #IMAGE
-				my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-				$normal->fits_imag($image);
+				#my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+				#$normal->fits_imag($image);
 				my @dim = dims($image);
 #				print join(',',@dim),"\n";
 				#join(',',@dim)

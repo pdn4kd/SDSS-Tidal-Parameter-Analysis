@@ -1,9 +1,9 @@
 use strict;
 use warnings;
-use PGPLOT;
+#use PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
 use PDL::IO::FITS;;
 use Text::CSV;
@@ -16,8 +16,8 @@ use PDL::IO::Misc;
 use PDL::Transform;
 #use Astro::FITS::Header;
 #use Astro::FITS::Header::CFITSIO;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 
 
 open my $SEX, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
@@ -47,8 +47,8 @@ my @B = map {$_->{'B_IMAGE'}} @{$inputs};
 my @THETA = map {$_->{'THETA_IMAGE'}} @{$inputs};
 
 my $image = rfits("mask_1.p${nyuID[$posCount]}_S82.fits"); #IMAGE
-my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$normal->fits_imag($image);
+#my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$normal->fits_imag($image);
 my @dim = dims($image);
 print join(',',@dim),"\n";
 #join(',',@dim)
@@ -117,8 +117,8 @@ my $HOT_Mimage_B = rfits("hmask_1b.p${nyuID[$posCount]}_S82.fits");
 my $COLD_Mimage_A = rfits("mask_1a.p${nyuID[$posCount]}_S82.fits");
 my $COLD_Mimage_B = rfits("mask_1b.p${nyuID[$posCount]}_S82.fits");
 
-my $mask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$mask_image->fits_imag($HOT_Mimage_B,0,1);
+#my $mask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$mask_image->fits_imag($HOT_Mimage_B,0,1);
 
 my $final_galfit_mask = $COLD_Mimage_A + $HOT_Mimage_A;
 $final_galfit_mask->sethdr($image->hdr);
@@ -127,15 +127,15 @@ $final_galfit_mask->wfits("FMASK.p${nyuID[$posCount]}_S82.fits");
 my $final_galfit_mask2 = $COLD_Mimage_B * $HOT_Mimage_B;
 $final_galfit_mask2->sethdr($image->hdr);
 $final_galfit_mask2->wfits("FMASK_b.p${nyuID[$posCount]}_S82.fits");
-my $fmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$fmask_image->fits_imag($final_galfit_mask2,0,1);
+#my $fmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$fmask_image->fits_imag($final_galfit_mask2,0,1);
 
 ##NEW masked image
 my $Un_masked = $image * $HOT_Mimage_B;
 #$residual->where($residual <= -1 ) .= 0;
 $Un_masked->sethdr($image->hdr);
 $Un_masked->wfits("MASKED.p${nyuID[$posCount]}_S82.fits");
-my $UMmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$UMmask_image->fits_imag($Un_masked);
+#my $UMmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$UMmask_image->fits_imag($Un_masked);
 }
 }

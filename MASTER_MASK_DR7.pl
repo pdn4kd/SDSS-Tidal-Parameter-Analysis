@@ -1,9 +1,9 @@
 use strict;
 use warnings;
-use PGPLOT;
+#use PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
 use PDL::IO::FITS;;
 use Text::CSV;
@@ -14,8 +14,8 @@ use PDL::Graphics::IIS;
 my $deg2rad = pi/180.;
 use PDL::IO::Misc;
 use PDL::Transform;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 
 use Cwd;
 
@@ -115,8 +115,8 @@ print $Tp_mask "NUMBER,X_IMAGE,Y_IMAGE,A_IMAGE,B_IMAGE,THETA_IMAGE,KRON_RADIUS\n
 				my @ba = map {$_->{'B_IMAGE'}/$_->{'A_IMAGE'}} @{$parameter3};
 				my $ba_rounded;
 				my $image = rfits("p${nyuID[$posCount]}_DR7.fits"); #IMAGE
-				my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-				$normal->fits_imag($image);
+				# my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+				# $normal->fits_imag($image);
 				my @dim = dims($image);
 #				print join(',',@dim),"\n";
 				#join(',',@dim)
@@ -272,7 +272,7 @@ $j=0;
 
 		}	# Close ALLAPER
 	} #Close Search condition for Kron radius 
-}
+} #Close postage stamp existence check
 } #Close All
 
 system("/usr/bin/perl $dir/COLD_MASK1_DR7.pl");

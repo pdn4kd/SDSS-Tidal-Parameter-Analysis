@@ -1,9 +1,9 @@
 use strict;
 use warnings;
-use PGPLOT;
+#use PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
 use PDL::IO::FITS;;
 use Text::CSV;
@@ -16,8 +16,8 @@ use PDL::IO::Misc;
 use PDL::Transform;
 #use Astro::FITS::Header;
 #use Astro::FITS::Header::CFITSIO;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 
 
 open my $SEX, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
@@ -46,8 +46,8 @@ my @B = map {$_->{'B_IMAGE'}} @{$inputs};
 my @THETA = map {$_->{'THETA_IMAGE'}} @{$inputs};
 
 my $image = rfits("p${nyuID[$posCount]}_S82.fits"); #IMAGE
-my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$normal->fits_imag($image);
+#my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$normal->fits_imag($image);
 my @dim = dims($image);
 print join(',',@dim),"\n";
 #join(',',@dim)
@@ -112,15 +112,15 @@ $ellipse_2->wfits("tmask_1b.p${nyuID[$posCount]}_S82.fits");
 
 my $Mimage = rfits("tmask_1b.p${nyuID[$posCount]}_S82.fits");
 
-my $mask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$mask_image->fits_imag($Mimage,0,1);
+#my $mask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$mask_image->fits_imag($Mimage,0,1);
 
 ##NEW masked image
 my $Un_masked = $image * $Mimage;
 $Un_masked->sethdr($image->hdr);
 
 $Un_masked->wfits("tmask.p${nyuID[$posCount]}_S82.fits");
-my $UMmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$UMmask_image->fits_imag($Un_masked);
+#my $UMmask_image = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$UMmask_image->fits_imag($Un_masked);
 }
 }
