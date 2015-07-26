@@ -3,7 +3,7 @@ Finding tidal parameters of SDSS galaxies via sérsic fits. Derived from Xia's c
 
 ## Required files
 tophat_4.0_5x5.conv, default.nnw, and test1.param provide additional information the scripts need to run, but you may be able to swap them out, depending on available libraries. read_PSF is also required, but not included. Download/compile from SDSS.
-Perl dependencies: PGPlot Text::CSV PDL Math::Trig (semi-required: Cwd, Statistics, List, Astro::FITS:Header)
+Perl dependencies: PGPlot(if debug images enabled) OpenGL Text::CSV PDL Math::Trig (semi-required: Cwd, Statistics, List, Astro::FITS:Header)
 Additional executables: read_PSF, GALFIT, SExtractor. You'll want to make them executable like system files.
 3rd party software: IRAF (and by extension xgterm). Saoimage ds9, while not strictly required, is still useful.
 
