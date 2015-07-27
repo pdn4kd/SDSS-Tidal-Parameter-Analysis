@@ -16,10 +16,8 @@ use PDL::IO::Misc;
 use PDL::Transform;
 #$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
 #$ENV{'PGPLOT_DEV'} = '/xs';
-
-use Cwd;
-
-my $dir = getcwd;
+#use Cwd;
+#my $dir = getcwd;
 #print "$dir\n";
 
 
@@ -275,8 +273,8 @@ $j=0;
 } #Close postage stamp existence check
 } #Close All
 
-system("/usr/bin/perl $dir/COLD_MASK1_DR7.pl");
-system("/usr/bin/perl $dir/HOT_MASK1_DR7.pl");
-system("/usr/bin/perl $dir/GALFIT_INPUTS_DR7.pl");
-system("/usr/bin/perl $dir/Tidal_mask_DR7.pl");
-print "Finished mask inputs and GALFIT inputs"
+#system("/usr/bin/perl $dir/COLD_MASK1_DR7.pl");
+#system("/usr/bin/perl $dir/HOT_MASK1_DR7.pl");
+#system("/usr/bin/perl $dir/GALFIT_INPUTS_DR7.pl");
+#system("/usr/bin/perl $dir/Tidal_mask_DR7.pl");
+#print "Finished mask inputs and GALFIT inputs"

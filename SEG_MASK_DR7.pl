@@ -17,19 +17,19 @@ use PDL::Transform;
 #$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
 #$ENV{'PGPLOT_DEV'} = '/xs';
 
-open my $SEX, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
+open my $SEX, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!";
 my $inp = Text::CSV->new({'binary'=>1});
 $inp->column_names($inp->getline($SEX));
 my $parameter = $inp->getline_hr_all($SEX);
 my @ID = map {$_->{'nyuID'}} @{$parameter};
 
-open my $Maker, '>', "Mask_Maker_S82.cl" or die "cannot open Mask_Maker_S82.cl: $!"; # run in IRAF
+open my $Maker, '>', "Mask_Maker_DR7.cl" or die "cannot open Mask_Maker_DR7.cl: $!"; # run in IRAF
 open my $displ, '>', "display_seg.cl" or die "cannot open display_seg.cl: $!"; # run in IRAF
 foreach my $posCount (0 .. scalar @ID - 1) {
-if ((-e "p${ID[$posCount]}_S82.fits") && (-e "p${ID[$posCOunt]}_S82.aper.csv")) { #cutout and apertures exist
-print "${ID[$posCount]}_S82.fits\n";
+if ((-e "p${ID[$posCount]}_DR7.fits") && (-e "p${ID[$posCOunt]}_DR7.aper.csv")) { #cutout and apertures exist
+print "${ID[$posCount]}_DR7.fits\n";
 #NEW MASK USING SEXTRACTOR
-open my $inPositions, '<', "${ID[$posCount]}_S82.aper.csv" or die "cannot open ${ID[$posCount]}_S82.aper.csv: $!";
+open my $inPositions, '<', "${ID[$posCount]}_DR7.aper.csv" or die "cannot open ${ID[$posCount]}_DR7.aper.csv: $!";
 my $input_positions = Text::CSV->new({'binary'=>1});
 $input_positions->column_names($input_positions->getline($inPositions));
 my $inputs = $input_positions->getline_hr_all($inPositions);
@@ -42,9 +42,9 @@ my @Y = map {$_->{'Y_IMAGE'}} @{$inputs};
 my @ISO_AREA = map {$_->{'ISOAREA_IMAGE'}} @{$inputs};
 
 ##Open your image from a list
-my $image = rfits("${ID[$posCount]}_S82.fits"); #nyu250588
+my $image = rfits("${ID[$posCount]}_DR7.fits"); #nyu250588
 
-print $displ "displ ${ID[$posCount]}_S82.fits 1\n"; #displ
+print $displ "displ ${ID[$posCount]}_DR7.fits 1\n"; #displ
 print $displ "imexam\n"; #make mask_1a for GALFIT 1=bad 0= good
 
 #Display a image using the perl
@@ -99,30 +99,30 @@ my $ellipse_2 = ones($size_x,$size_y);
 			$X_B = $x-$Area;
 			$Y_A = $y+$Area;
 			$Y_B = $y-$Area;
-			print $Maker "imcopy ${ID[$posCount]}_S82.seg.fits ${ID[$posCount]}_S82.mask_1a.fits\n"; #make mask_1a for GALFIT 1=bad 0= good
-			print $Maker "imcopy ${ID[$posCount]}_S82.seg.fits ${ID[$posCount]}_S82.mask_1b.fits\n"; #Make masking image 1=good 0=bad
-			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1a.fits value =0 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to GALFit = 0
-			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to 1
+			print $Maker "imcopy ${ID[$posCount]}_DR7.seg.fits ${ID[$posCount]}_DR7.mask_1a.fits\n"; #make mask_1a for GALFIT 1=bad 0= good
+			print $Maker "imcopy ${ID[$posCount]}_DR7.seg.fits ${ID[$posCount]}_DR7.mask_1b.fits\n"; #Make masking image 1=good 0=bad
+			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to GALFit = 0
+			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to 1
 
-			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1a.fits value =1 lower=1 upper=INDEF\n";
-			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1a.fits value =0 lower=-99 upper=0\n";
+			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1a.fits value =1 lower=1 upper=INDEF\n";
+			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=-99 upper=0\n";
 
-			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1b.fits value =1 lower=0 upper=0\n";						   #Change sky to 1
-			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1b.fits value =0 lower=2 upper=INDEF\n";
-			print $Maker "imarith ${ID[$posCount]}_S82.mask_1b.fits * ${ID[$posCount]}_S82.fits Good.${ID[$posCount]}_S82.fits\n"; #Final math for Good image
+			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=0 upper=0\n";						   #Change sky to 1
+			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1b.fits value =0 lower=2 upper=INDEF\n";
+			print $Maker "imarith ${ID[$posCount]}_DR7.mask_1b.fits * ${ID[$posCount]}_DR7.fits Good.${ID[$posCount]}_DR7.fits\n"; #Final math for Good image
 			}
 #			elsif ($X_A >= $X[$sexCount]  && ($Y_A >= $Y[$sexCount] && $Y_B <= $Y[$sexCount]) &&
 #			       $X_B <= $X[$sexCount]  && ($Y_A >= $Y[$sexCount] && $Y_B <= $Y[$sexCount]))
 #			{
 #			print "$N[$sexCount]\n";
 #			print "$X_A,$X_B\n";
-#			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; # change galaxy 1
-#			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1b.fits value =1 lower=0 upper=0\n";						   #Change sky to 1
-#			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1b.fits value =0 lower=2 upper=INDEF\n";					   #remove other sources to zero
-#			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1a.fits value =0 lower=$N[$sexCount] upper=$N[$sexCount]\n"; # make sky 0 for GALFIT
-#			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1a.fits value =1 lower=1 upper=INDEF\n";
-#			print $Maker "imreplace ${ID[$posCount]}_S82.mask_1a.fits value =0 lower=-99 upper=0\n";
-#			print $Maker "imarith  ${ID[$posCount]}_S82.mask_1b.fits * ${ID[$posCount]}.fits Good.${ID[$posCount]}.fits\n"; #Final math for Good image
+#			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; # change galaxy 1
+#			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=0 upper=0\n";						   #Change sky to 1
+#			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1b.fits value =0 lower=2 upper=INDEF\n";					   #remove other sources to zero
+#			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=$N[$sexCount] upper=$N[$sexCount]\n"; # make sky 0 for GALFIT
+#			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1a.fits value =1 lower=1 upper=INDEF\n";
+#			print $Maker "imreplace ${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=-99 upper=0\n";
+#			print $Maker "imarith  ${ID[$posCount]}_DR7.mask_1b.fits * ${ID[$posCount]}.fits Good.${ID[$posCount]}.fits\n"; #Final math for Good image
 #			}
 
 		}

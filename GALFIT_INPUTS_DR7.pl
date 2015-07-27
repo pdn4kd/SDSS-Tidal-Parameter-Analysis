@@ -11,8 +11,8 @@ use PDL;
 #use PDL::Fit::Polynomial qw(fitpoly1d);
 #$ENV{PGPLOT_FOREGROUND} = "black";
 #$ENV{PGPLOT_BACKGROUND} = "white";
-use Cwd;
-my $dir = getcwd;
+#use Cwd;
+#my $dir = getcwd;
  
  my @galaxy_fits = qw/1 2 4 a 14/; #model fits we are checking
  
@@ -29,7 +29,7 @@ my @bkg = map {$_->{'global_background_r'}+1000} @{$position};
 	
 open my $galfit_batch, '>', "GALFIT_BATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
 open my $mgalfit_batch, '>', "GALFIT_MBATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
-system("/usr/bin/perl $dir/BACKGROUND_REPLACER_DR7.pl");
+#system("/usr/bin/perl $dir/BACKGROUND_REPLACER_DR7.pl");
 foreach my $galCount (0 .. scalar @nyuID - 1) {
 if ((-e "p${nyuID[$galCount]}_DR7.fits") && (-e "p${nyuID[$galCount]}_DR7.aper.csv")) {
 my $Good_values = rfits("background.p$nyuID[$galCount]_DR7.fits");
@@ -731,7 +731,7 @@ print $mgalfit14 <<___end___;
 ___end___
 
 }
-system ("rm $dir/galfit.* ");
+#system ("rm $dir/galfit.* ");
 #system ("/usr/local/bin/galfit $dir/p$nyuID[$galCount]_DR7.galfit_1");
 #system ("mv galfit.01 $dir/");
 #print "Finished p$nyuID[$galCount].fits\n";	

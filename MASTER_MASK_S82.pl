@@ -18,9 +18,9 @@ use PDL::Transform;
 #$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
 #$ENV{'PGPLOT_DEV'} = '/xs';
 
-use Cwd;
+#use Cwd;
 
-my $dir = getcwd;
+#my $dir = getcwd;
 #print "$dir\n";
 
 
@@ -276,8 +276,8 @@ $j=0;
 }
 } #Close All
 
-system("/usr/bin/perl $dir/COLD_MASK1_S82.pl");
-system("/usr/bin/perl $dir/HOT_MASK1_S82.pl");
-system("/usr/bin/perl $dir/GALFIT_INPUTS_S82.pl");
-system("/usr/bin/perl $dir/Tidal_mask_S82.pl");
-print "Finished mask inputs and GALFIT inputs"
+#system("/usr/bin/perl $dir/COLD_MASK1_S82.pl");
+#system("/usr/bin/perl $dir/HOT_MASK1_S82.pl");
+#system("/usr/bin/perl $dir/GALFIT_INPUTS_S82.pl");
+#system("/usr/bin/perl $dir/Tidal_mask_S82.pl");
+#print "Finished mask inputs and GALFIT inputs"
