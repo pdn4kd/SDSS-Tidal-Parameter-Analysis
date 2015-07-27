@@ -54,8 +54,7 @@ print join(',',@dim),"\n";
 #join(',',@dim)
 my $size_x = $dim[0];
 my $size_y = $dim[1];
-print "This image is $size_x $size_y pixels";
-print "\n";
+print "This image is $size_x $size_y pixels\n";
 #
 #------------------------
 my $e; #eccentricity
