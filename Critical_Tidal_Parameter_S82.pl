@@ -1,19 +1,18 @@
 use strict;
 use warnings;
-use PGPLOT;
+#use PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 use Text::CSV;
-use PDL::Image2D;
 #use Astro::IRAF::CL;
-use Cwd qw(cwd);
+#use Cwd qw(cwd);
 #use PDL::GSL::RNG;
-use Cwd;
-my $dir = getcwd;
+#use Cwd;
+#my $dir = getcwd;
  
  #Creates tidal images for all galaxy images/models.
 
@@ -82,8 +81,8 @@ print "${nyuID[$posCount]}_S82,$galaxy_fits,$Tp\n";
 #my $aTp = $Tp/$area;
 
 #histograms
-my $hist_Win = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
-$hist_Win->bin(hist($T_image->clump(-1)));
+#my $hist_Win = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
+#$hist_Win->bin(hist($T_image->clump(-1)));
 #print $displ "displ p${nyuID[$posCount]}_S82.model_1.fits[1] 1\n";
 #print $displ "displ p${nyuID[$posCount]}_S82.model_1.fits[2] 2\n";
 #print $displ "displ p${nyuID[$posCount]}_S82.model_1.fits[3] 3\n";
