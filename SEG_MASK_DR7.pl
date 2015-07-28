@@ -24,7 +24,7 @@ my $parameter = $inp->getline_hr_all($SEX);
 my @ID = map {$_->{'col0'}} @{$parameter};
 
 open my $Maker, '>', "Mask_Maker_DR7.cl" or die "cannot open Mask_Maker_DR7.cl: $!"; # run in IRAF
-open my $displ, '>', "display_seg.cl" or die "cannot open display_seg.cl: $!"; # run in IRAF
+open my $displ, '>', "display_seg_DR7.cl" or die "cannot open display_seg_DR7.cl: $!"; # run in IRAF
 foreach my $posCount (0 .. scalar @ID - 1) {
 		if ((-e "p${ID[$posCount]}_DR7.fits") && (-e "p${ID[$posCount]}_DR7.aper.csv")) { #cutout and apertures exist
 		print "p${ID[$posCount]}_DR7.fits\n";
