@@ -147,7 +147,7 @@ print $Tp_mask "NUMBER,X_IMAGE,Y_IMAGE,A_IMAGE,B_IMAGE,THETA_IMAGE,KRON_RADIUS\n
 								#PRINT OUT TO GAFIT INPUTS
 								print $GALFIT_input "$gN[$ColdCount]c,$MAG_AUTO[$ColdCount],$gX[$ColdCount],$gY[$ColdCount],$Re[$posCount],4,$gTHETA[$ColdCount],$ba_rounded,1,$size_x,$size_y,sersic\n";	
 												#ID,NUMBER,MAG,MAGErr,petro_mag,petro_magErr,model_mag,model_magErr,X_IMAGE,Y_IMAGE,conc_r,R50\n
-								print $DELMAG "$nyuID[$posCount]_S82,$gN[$ColdCount]c,$MAG_AUTO[$ColdCount],$MAGERR_AUTO[$ColdCount],$petro_mag[$posCount],$petroErr_mag[$posCount],$model_mag[$posCount],$modelErr_mag[$posCount],$gX[$ColdCount],$gY[$ColdCount],$Re[$posCount],$conc_r[$posCount]\n"; #header for delmag																				
+								print $DELMAG "$nyuID[$posCount],$gN[$ColdCount]c,$MAG_AUTO[$ColdCount],$MAGERR_AUTO[$ColdCount],$petro_mag[$posCount],$petroErr_mag[$posCount],$model_mag[$posCount],$modelErr_mag[$posCount],$gX[$ColdCount],$gY[$ColdCount],$Re[$posCount],$conc_r[$posCount]\n"; #header for delmag																				
 								print $Tp_mask "$gN[$ColdCount],$gX[$ColdCount],$gY[$ColdCount],$gA[$ColdCount],$gB[$ColdCount],$gTHETA[$ColdCount],$gKron[$ColdCount]\n";
 								} #CLOSE GALAXY SEARCH CONDITIONS 
 
