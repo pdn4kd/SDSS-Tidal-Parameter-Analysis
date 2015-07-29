@@ -7,7 +7,8 @@ use Statistics::OLS;
 use PDL;
 #use PDL::Graphics2D;
 use PDL::Constants qw(PI);
-use PDL::Fit::Polynomial qw(fitpoly1d);
+my $deg2rad = PI/180.;
+#use PDL::Fit::Polynomial qw(fitpoly1d);
 #use PGPLOT;
 #$ENV{PGPLOT_FOREGROUND} = "black";
 #$ENV{PGPLOT_BACKGROUND} = "white";
@@ -108,8 +109,8 @@ foreach my $posCount (0 .. scalar @nyuID - 1)
 		@theta_p = map{$_->{'THETA_IMAGE'}} grep {$_->{'X_IMAGE'} > ($px[$posCount] - 5) && $_->{'X_IMAGE'} < ($px[$posCount] + 5) && $_->{'Y_IMAGE'} > ($py[$posCount] - 5) && $_->{'Y_IMAGE'} < ($py[$posCount] + 5) } @{$galaxy_inputs};
 		
 		#Correct GALAPAGOS equation would be 2.5x, not 5x
-		$Xp_cutout = 5.0 * $a_p[0] * $Kron_p[0] * ( (abs(sin((PI/180) * $theta_p[0]))) + (1 - $E_p[0]) * (abs(cos((PI/180) * $theta_p[0]))) );
-		$Yp_cutout = 5.0 * $a_p[0] * $Kron_p[0] * ( (abs(cos((PI/180) * $theta_p[0]))) + (1 - $E_p[0]) * (abs(sin((PI/180) * $theta_p[0]))) );
+		$Xp_cutout = 5.0 * $a_p[0] * $Kron_p[0] * ( (abs(sin(($deg2rad) * $theta_p[0]))) + (1 - $E_p[0]) * (abs(cos(($deg2rad) * $theta_p[0]))) );
+		$Yp_cutout = 5.0 * $a_p[0] * $Kron_p[0] * ( (abs(cos(($deg2rad) * $theta_p[0]))) + (1 - $E_p[0]) * (abs(sin(($deg2rad) * $theta_p[0]))) );
 
 		my $Xp = sprintf("%.0f", $Xp_image[0]);
 		my $Yp = sprintf("%.0f", $Yp_image[0]);
