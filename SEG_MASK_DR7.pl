@@ -27,7 +27,7 @@ my @ID = map {$_->{'col0'}} @{$parameter};
 open my $Maker, '>', "Mask_Maker_DR7.cl" or die "cannot open Mask_Maker_DR7.cl: $!"; # run in IRAF
 open my $displ, '>', "display_seg_DR7.cl" or die "cannot open display_seg_DR7.cl: $!"; # run in IRAF
 foreach my $posCount (0 .. scalar @ID - 1) {
-		if ((-e "p${ID[$posCount]}_DR7.fits") && (-e "p${ID[$posCount]}_DR7.aper.csv")) { #cutout and apertures exist
+	if ((-e "p${ID[$posCount]}_DR7.fits") && (-e "p${ID[$posCount]}_DR7.aper.csv")) { #cutout and apertures exist
 		print "p${ID[$posCount]}_DR7.fits\n";
 		#NEW MASK USING SEXTRACTOR
 		open my $inPositions, '<', "${ID[$posCount]}_DR7.aper.csv" or die "cannot open p${ID[$posCount]}_DR7.aper.csv: $!";
@@ -88,12 +88,10 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 		my $ellipse = zeroes($size_x,$size_y);
 		my $ellipse_2 = ones($size_x,$size_y);
 
-		#		FOR ALL THE CRAP!
-				foreach my $sexCount (0 .. scalar @N - 1)
-				{
-					if ($x_1 >= $X[$sexCount]  && ($y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount]) &&
-						$x_2 <= $X[$sexCount]  && ($y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount]))
-					{
+		#	FOR ALL THE CRAP!
+			foreach my $sexCount (0 .. scalar @N - 1) {
+				if ($x_1 >= $X[$sexCount]  && ($y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount]) &&
+						$x_2 <= $X[$sexCount]  && ($y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount])) {
 					$Area = sprintf("%.1f",($ISO_AREA[0]**0.5/2));
 					print "$N[$sexCount]\n";
 					$X_A = $x+$Area;
@@ -124,9 +122,8 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 		#			print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1a.fits value =1 lower=1 upper=INDEF\n";
 		#			print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=-99 upper=0\n";
 		#			print $Maker "imarith  p${ID[$posCount]}_DR7.mask_1b.fits * p${ID[$posCount]}.fits Good.${ID[$posCount]}.fits\n"; #Final math for Good image
-		#			}
-
-				}
+		#		}
 			}
+		}
 	}
 print "Finished\n";
