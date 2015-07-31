@@ -31,7 +31,7 @@ foreach my $galaxy_fits (@galaxy_fits) { #iterate over all fit types
 
 foreach my $posCount (0 .. scalar @nyuID - 1) {
 if (-e "p${nyuID[$posCount]}_S82.model_$galaxy_fits.fits") { #Does the output image actually exist?
-print "p${nyuID[$posCount]}_S82.fits\n";
+print "p${nyuID[$posCount]}_S82.model_$galaxy_fits.fits\n";
 #print $displ "p${nyuID[$posCount]}_S82.fits";
 
 my $Good_values = rfits("background.p${nyuID[$posCount]}_S82.fits");
