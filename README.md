@@ -90,4 +90,4 @@ ORDER BY x.up_id
 (for Stripe 82, add WHERE (p.run = 106 or p.run = 206) and (p.type = 3) )
 
 ## Data Analysis:
-GALFIT_OUTPUT_READER.pl and GALFIT_PARAMETERS.pl generate measures of fit quality
+GALFIT_OUTPUT_READER.pl and GALFIT_PARAMETERS.pl generate measures of fit quality. Run in that order to get CSVs of each cutout/fit, and then an overall listing (Del_parameters.csv).

@@ -28,7 +28,7 @@ my @petroErr_mag = map {$_->{'petroMagErr_r'}} @{$position_inputs}; #petrosian m
 my @model_mag = map {$_->{'modelMag_r'}} @{$position_inputs};
 my @modelErr_mag = map {$_->{'modelMagErr_r'}} @{$position_inputs};
 
-open my $T_plot, '>', "Del_Parameters.csv";
+open my $T_plot, '>', "Del_Parameters_DR7.csv";
 print $T_plot "ID,MAG_AUTO,MAGERR_AUTO,GAL_MAG,SDSS_Re,GAL_Re,Kron,Fit_Type,sersic,GAL_x,GAL_y,SEX_x,SEX_y,SEX_e,SEX_theta,GAL_e,GAL_theta\n";
 
 foreach my $posCount (0 .. scalar @nyuID - 1) {
@@ -79,3 +79,4 @@ my @SEX_theta = map {$_->{'THETA_IMAGE'}} @{$position_inputs_2};
 	}
 }
 }
+print "Del_parameters_DR7.csv filled.\n";
