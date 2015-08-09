@@ -31,10 +31,10 @@ open my $PSFimages, '>', "Rename_PSF_DR7.sh" or die "cannot open Rename_PSF.sh: 
 open my $psflist, '>', "sdss-wget-PSF_DR7.lis" or die "cannot open sdss-wget-PSF_DR7.lis: $!"; #wget...
 open my $calfiles, '>', "sdss-wget-Calibration_DR7.lis" or die "cannot open sdss-wget-Calibration.lis: $!"; #wget...
 
-my $A = "fpAtlas";
-my $Ap = "Atlas";
+#my $A = "fpAtlas";
+#my $Ap = "Atlas";
 my $O ="fpC";
-my $DR7 = "_DR7";
+my $DataRelease = "_DR7";
 my $I = "psField";
 my $J = "psf";
 my $cal ='calibPhotm';
@@ -61,13 +61,13 @@ print $PSF_CUT "imarith cpsf.$_->{'col0'}_DR7.fits - 1000 scpsf.$_->{'col0'}_DR7
 	if ($_->{'run'} >= 1000 && $_->{'field'} >= 100)
 	{
 	#atlas image
-	print $cutouts 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-	print 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+	#print $cutouts 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
+	#print 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
 
 	
 	#Object frame
-	print $Objects 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-	print 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+	print $Objects 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+	print 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
 	
 	#PSF wget list
 	print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
@@ -75,8 +75,8 @@ print $PSF_CUT "imarith cpsf.$_->{'col0'}_DR7.fits - 1000 scpsf.$_->{'col0'}_DR7
 	print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-00$_->{'run'}-$_->{'camcol'}.fit";	
 
 	#PSF image
-	print $PSFimages 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-	print 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
+	print $PSFimages 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+	print 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
 	}
 		
 else
@@ -84,12 +84,12 @@ else
 if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
 		{
 		#atlas image
-		print $cutouts 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-		print 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+		#print $cutouts 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
+		#print 'imcopy',$A.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
 		
 		#Object frame
-		print $Objects 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-		print 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+		print $Objects 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+		print 'imcopy',$O.'-'.'00'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
 		
 		#PSF wget list
 		print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
@@ -97,20 +97,20 @@ if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
 		print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-00$_->{'run'}-$_->{'camcol'}.fit";
 		
 		#PSF image
-		print $PSFimages 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-		print 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
+		print $PSFimages 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+		print 'read_PSF',$I.'-'.'00'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
 		}
 		else
 		{
 			if ($_->{'run'} < 1000 && $_->{'run'} >= 100 && $_->{'field'} < 100 && $_->{'field'} > 10)
 			{
 			#atlas image
-			print $cutouts 'imcopy',$A.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-			print 'imcopy',$A.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+			#print $cutouts 'imcopy',$A.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
+			#print 'imcopy',$A.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
 			
 			#Object frame
-			print $Objects 'imcopy',$O.'-'.'000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-			print 'imcopy',$O.'-'.'000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+			print $Objects 'imcopy',$O.'-'.'000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+			print 'imcopy',$O.'-'.'000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
 			
 			#PSF wget list
 			print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
@@ -118,20 +118,20 @@ if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
 			print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-000$_->{'run'}-$_->{'camcol'}.fit";			
 		
 			#PSF image
-			print $PSFimages 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-			print 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';	
+			print $PSFimages 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+			print 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';	
 			}
 			else
 			{
 			if ($_->{'run'} < 100 && $_->{'run'} >= 10 && $_->{'field'} < 1000 && $_->{'field'} >= 100)
 				{
 				#atlas image
-				print $cutouts 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-				print 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+				#print $cutouts 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
+				#print 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
 				
 				#Object frame
-				print $Objects 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-				print 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+				print $Objects 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+				print 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
 				
 				#PSF wget list
 				print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-0000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
@@ -139,19 +139,19 @@ if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
 				print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-0000$_->{'run'}-$_->{'camcol'}.fit";	
 				
 				#PSF image
-				print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-				print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';	
+				print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+				print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';	
 				}
 				else{
 					if ($_->{'run'} < 100 && $_->{'run'} >= 10 && $_->{'field'} < 100 && $_->{'field'} >= 10)
 					{
 					#atlas image
-					print $cutouts 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-					print 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+					#print $cutouts 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
+					#print 'imcopy',$A.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
 				
 					#Object frame
-					print $Objects 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-					print 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+					print $Objects 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+					print 'imcopy',$O.'-'.'0000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
 				
 					#PSF wget list
 					print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-0000$_->{'run'}-$_->{'camcol'}-00$_->{'field'}.fit";
@@ -159,20 +159,20 @@ if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
 					print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-0000$_->{'run'}-$_->{'camcol'}.fit";	
 					
 					#PSF image
-					print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-					print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';	
+					print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+					print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'00'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';	
 					}
 					else
 					{
 						if ($_->{'run'} < 10 && $_->{'field'} < 10)
 						{
 						#atlas image
-						print $cutouts 'imcopy',$A.'-'.'00000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
-						print 'imcopy',$A.'-'.'00000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DR7.'.'.'fits';
+						#print $cutouts 'imcopy',$A.'-'.'00000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
+						#print 'imcopy',$A.'-'.'00000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.'.'.$Ap.$DataRelease.'.'.'fits';
 					
 						#Object frame
-						print $Objects 'imcopy',$O.'-'.'00000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
-						print 'imcopy',$O.'-'.'00000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DR7.'.'.'fits';
+						print $Objects 'imcopy',$O.'-'.'00000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+						print 'imcopy',$O.'-'.'00000'.$_->{'run'}.'-'.'r'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
 					
 						#PSF wget list
 						print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-00000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
@@ -180,16 +180,16 @@ if ($_->{'run'} >= 1000 && $_->{'field'} < 100)
 						print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-00000$_->{'run'}-$_->{'camcol'}.fit";						
 						
 						#PSF image
-						print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-						print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';		
+						print $PSFimages 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+						print 'read_PSF',$I.'-'.'0000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'000'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';		
 						}	
 						else 
 						{
 						print $psflist "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-0$_->{'field'}.fit";
 						print "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/psField-000$_->{'run'}-$_->{'camcol'}-000$_->{'field'}.fit";
 						print $calfiles "http://das.sdss.org/imaging/$_->{'run'}/$_->{'rerun'}/objcs/$_->{'camcol'}/$cal-000$_->{'run'}-$_->{'camcol'}.fit";
-						print $PSFimages 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
-						print 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DR7.'.'.'fits';
+						print $PSFimages 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+						print 'read_PSF',$I.'-'.'000'.$_->{'run'}.'-'.$_->{'camcol'}.'-'.'0'.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
 						}
 					}
 				}		
