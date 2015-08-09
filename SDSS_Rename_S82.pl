@@ -32,7 +32,7 @@ open my $PSFimages, '>', "Rename_PSF_S82.sh" or die "cannot open Rename_PSF.sh: 
 open my $psflist, '>', "sdss-wget-PSF_S82.lis" or die "cannot open sdss-wget-PSF_S82.lis: $!"; #wget...
 
 my $O ="fpC";
-my $S82 = "_S82";
+my $DataRelease = "_S82";
 my $I = "psField";
 my $J = "psf";
 
@@ -73,16 +73,16 @@ for (grep {$_->{'col0'}} @{$position_inputs})
 	#http://data.sdss3.org/sas/dr9/boss/photoObj/frames/301/3704/3/frame-g-003704-3-0091.fits.bz2
 
 	#Object frame
-	print $Objects 'imcopy',$O.'-'.$run0.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits'; #Rename
-	print 'imcopy',$O.'-'.$run0.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$S82.'.'.'fits';
-	print $Objects 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits'; #adding back light sky background to make comparable with DR7.
-	print 'imarith',$_->{'col0'}.$S82.'.'.'fits','+ 1000',$_->{'col0'}.$S82.'.'.'fits';
+	print $Objects 'imcopy',$O.'-'.$run0.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits'; #Rename
+	print 'imcopy',$O.'-'.$run0.'-'.'r'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit',$_->{'col0'}.$DataRelease.'.'.'fits';
+	print $Objects 'imarith',$_->{'col0'}.$DataRelease.'.'.'fits','+ 1000',$_->{'col0'}.$DataRelease.'.'.'fits'; #adding back light sky background to make comparable with DR7.
+	print 'imarith',$_->{'col0'}.$DataRelease.'.'.'fits','+ 1000',$_->{'col0'}.$DataRelease.'.'.'fits';
 	#PSF wget list
 	print $psflist "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
 	print "http://das.sdss.org/imaging/$run0/$_->{'rerun'}/objcs/$_->{'camcol'}/$I-$run0-$_->{'camcol'}-$field0$_->{'field'}.fit";
 	#PSF image
-	print $PSFimages 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$S82.'.'.'fits';
-	print 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$S82.'.'.'fits';
+	print $PSFimages 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
+	print 'read_PSF',$I.'-'.$run0.'-'.$_->{'camcol'}.'-'.$field0.$_->{'field'}.'.'.'fit','3',$_->{'imgx'},$_->{'imgy'},$J.'.'.$_->{'col0'}.$DataRelease.'.'.'fits';
 }
 
 print "Files renamed\n";
