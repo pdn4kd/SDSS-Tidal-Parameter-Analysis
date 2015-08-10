@@ -27,10 +27,10 @@ my @ID = map {$_->{'col0'}} @{$parameter};
 open my $Maker, '>', "Mask_Maker_DR7.cl" or die "cannot open Mask_Maker_DR7.cl: $!"; # run in IRAF
 open my $displ, '>', "display_seg_DR7.cl" or die "cannot open display_seg_DR7.cl: $!"; # run in IRAF
 foreach my $posCount (0 .. scalar @ID - 1) {
-	if ((-e "p${ID[$posCount]}_DR7.fits") && (-e "p${ID[$posCount]}_DR7.aper.csv")) { #cutout and apertures exist
+	if ((-e "p${ID[$posCount]}_DR7.fits") && (-e "p${ID[$posCount]}_DR7.seg.csv")) { #cutout and segmaps exist
 		print "p${ID[$posCount]}_DR7.fits\n";
 		#NEW MASK USING SEXTRACTOR
-		open my $inPositions, '<', "${ID[$posCount]}_DR7.aper.csv" or die "cannot open p${ID[$posCount]}_DR7.aper.csv: $!";
+		open my $inPositions, '<', "p${ID[$posCount]}_DR7.seg.csv" or die "cannot open p${ID[$posCount]}_DR7.seg.csv: $!";
 		my $input_positions = Text::CSV->new({'binary'=>1});
 		$input_positions->column_names($input_positions->getline($inPositions));
 		my $inputs = $input_positions->getline_hr_all($inPositions);
@@ -43,7 +43,7 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 		my @ISO_AREA = map {$_->{'ISOAREA_IMAGE'}} @{$inputs};
 
 		##Open your image from a list
-		my $image = rfits("p${ID[$posCount]}_DR7.fits"); #nyu250588
+		my $image = rfits("p${ID[$posCount]}_DR7.fits");
 
 		print $displ "displ p${ID[$posCount]}_DR7.fits 1\n"; #displ
 		print $displ "imexam\n"; #make mask_1a for GALFIT 1=bad 0= good
@@ -90,16 +90,16 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 
 		#	FOR ALL THE CRAP!
 			foreach my $sexCount (0 .. scalar @N - 1) {
-				if ($x_1 >= $X[$sexCount]  && ($y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount]) &&
-						$x_2 <= $X[$sexCount]  && ($y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount])) {
+				#if the detected object is within 5 pixels of the center
+				if ($x_1 >= $X[$sexCount]  && $y_1 >= $Y[$sexCount] && $y_2 <= $Y[$sexCount] && $x_2 <= $X[$sexCount]) {
 					$Area = sprintf("%.1f",($ISO_AREA[0]**0.5/2));
 					print "$N[$sexCount]\n";
 					$X_A = $x+$Area;
 					$X_B = $x-$Area;
 					$Y_A = $y+$Area;
 					$Y_B = $y-$Area;
-					print $Maker "imcopy p${ID[$posCount]}_DR7.fits p${ID[$posCount]}_DR7.mask_1a.fits\n"; #make mask_1a for GALFIT 1=bad 0= good
-					print $Maker "imcopy p${ID[$posCount]}_DR7.fits p${ID[$posCount]}_DR7.mask_1b.fits\n"; #Make masking image 1=good 0=bad
+					print $Maker "imcopy p${ID[$posCount]}_DR7.seg.fits p${ID[$posCount]}_DR7.mask_1a.fits\n"; #make mask_1a for GALFIT 1=bad 0= good
+					print $Maker "imcopy p${ID[$posCount]}_DR7.seg.fits p${ID[$posCount]}_DR7.mask_1b.fits\n"; #Make masking image 1=good 0=bad
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to GALFit = 0
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to 1
 
@@ -108,7 +108,7 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=0 upper=0\n";						   #Change sky to 1
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =0 lower=2 upper=INDEF\n";
-					print $Maker "imarith p${ID[$posCount]}_DR7.mask_1b.fits * p${ID[$posCount]}_DR7.fits Good.${ID[$posCount]}_DR7.fits\n"; #Final math for Good image
+					print $Maker "imarith p${ID[$posCount]}_DR7.mask_1b.fits * p${ID[$posCount]}_DR7.fits Good.p${ID[$posCount]}_DR7.fits\n"; #Final math for Good image
 					}
 		#			elsif ($X_A >= $X[$sexCount]  && ($Y_A >= $Y[$sexCount] && $Y_B <= $Y[$sexCount]) &&
 		#			       $X_B <= $X[$sexCount]  && ($Y_A >= $Y[$sexCount] && $Y_B <= $Y[$sexCount]))
