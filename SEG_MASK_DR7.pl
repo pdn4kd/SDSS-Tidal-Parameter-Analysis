@@ -126,6 +126,8 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 					#hack so GALFIT_INPUTS still uses the right images without a hotmask
 					print $Maker "imcopy Good.p${ID[$posCount]}_DR7.fits MASKED.p${ID[$posCount]}_DR7.fits\n";
 					print $Maker "imcopy p${ID[$posCount]}_DR7.mask_1a.fits FMASK.p${ID[$posCount]}_DR7.fits\n";
+					#hack so Critical_Tidal_Parameter still uses the right images without a hotmask
+					print $Maker "imcopy p${ID[$posCount]}_DR7.mask_1b.fits FMASK_b.p${ID[$posCount]}_DR7.fits\n";
 
 					#GALFIT_INPUTS CSV seed
 					my $ba_rounded = sprintf("%.3f",$ba[$sexCount]);
