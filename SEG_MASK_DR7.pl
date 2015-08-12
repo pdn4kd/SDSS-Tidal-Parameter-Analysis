@@ -18,6 +18,8 @@ use PDL::Transform;
 #$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
 #$ENV{'PGPLOT_DEV'} = '/xs';
 
+#This script generates a segmentation mask for the galaxies.
+#Todo, make it generate the (master-mask like) galfit seed CSVs.
 open my $SEX, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!";
 my $inp = Text::CSV->new({'binary'=>1});
 $inp->column_names($inp->getline($SEX));
@@ -42,7 +44,13 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 		my @Y = map {$_->{'Y_IMAGE'}} @{$inputs};
 		my @ISO_AREA = map {$_->{'ISOAREA_IMAGE'}} @{$inputs};
 
-		##Open your image from a list
+		#GALFIT_INPUTS CSV seed requirements
+		my @MAG_AUTO = map {$_->{'MAG_AUTO'}} @{$inputs};
+		my @Re = map {$_->{'KRON_RADIUS'}} @{$inputs};
+		my @THETA = map {$_->{'THETA_IMAGE'}} @{$inputs};
+		my @ba = map {$_->{'A_IMAGE'}/$_->{'B_IMAGE'}} @{$inputs};
+
+		#Open your image from a list
 		my $image = rfits("p${ID[$posCount]}_DR7.fits");
 
 		print $displ "displ p${ID[$posCount]}_DR7.fits 1\n"; #displ
@@ -109,6 +117,18 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=0 upper=0\n";						   #Change sky to 1
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =0 lower=2 upper=INDEF\n";
 					print $Maker "imarith p${ID[$posCount]}_DR7.mask_1b.fits * p${ID[$posCount]}_DR7.fits Good.p${ID[$posCount]}_DR7.fits\n"; #Final math for Good image
+
+					#hack so GALFIT_INPUTS still uses the right images without a hotmask
+					print $Maker "imcopy Good.p${ID[$posCount]}_DR7.fits MASKED.p${ID[$posCount]}_DR7.fits\n";
+					print $Maker "imcopy p${ID[$posCount]}_DR7.mask_1a.fits FMASK.p${ID[$posCount]}_DR7.fits\n";
+
+					#GALFIT_INPUTS CSV seed.
+					my $ba_rounded = sprintf("%.3f",$ba[$sexCount]);
+					open my $GALFIT_input, '>', "p${ID[$sexCount]}_DR7.galfit_input.csv" or die "cannot open p${ID[$sexCount]}_DR7.galfit_input.csv: $!";
+					print $GALFIT_input "NUMBER,MAG,X,Y,Re,n,THETA,ba,fit,sizex,sizey,type\n"; #header for galfit inputs
+					print $GALFIT_input "$N[$sexCount]s,$MAG_AUTO[$sexCount],$X[$sexCount],$Y[$sexCount],$Re[$sexCount],4,$THETA[$sexCount],$ba_rounded,1,$size_x,$size_y,sersic\n";	
+					#ID,NUMBER,MAG,MAGErr,petro_mag,petro_magErr,model_mag,model_magErr,X_IMAGE,Y_IMAGE,conc_r,R50\n
+					close $GALFIT_input;
 					}
 		#			elsif ($X_A >= $X[$sexCount]  && ($Y_A >= $Y[$sexCount] && $Y_B <= $Y[$sexCount]) &&
 		#			       $X_B <= $X[$sexCount]  && ($Y_A >= $Y[$sexCount] && $Y_B <= $Y[$sexCount]))
