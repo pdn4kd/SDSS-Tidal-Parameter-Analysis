@@ -119,7 +119,7 @@ print $Tp_mask "NUMBER,X_IMAGE,Y_IMAGE,A_IMAGE,B_IMAGE,THETA_IMAGE,KRON_RADIUS\n
 				#my $normal = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
 				#$normal->fits_imag($image);
 				my @dim = dims($image);
-#				print join(',',@dim),"\n";
+				#print join(',',@dim),"\n";
 				#join(',',@dim)
 				my $size_x = $dim[0];
 				my $size_y = $dim[1];
