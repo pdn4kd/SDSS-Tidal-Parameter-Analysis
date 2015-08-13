@@ -1,8 +1,9 @@
+#! /usr/bin/perl
 use strict;
 use warnings;
 #use PGPLOT;
 use Text::CSV;
-use Cwd qw(cwd);
+#use Cwd qw(cwd);
 #use String::Scanf;
 #use Statistics::OLS;
 use PDL;
@@ -12,9 +13,12 @@ use PDL;
 #$ENV{PGPLOT_BACKGROUND} = "white";
 #use Cwd;
 #my $dir = getcwd;
- 
- my @galaxy_fits = qw/1 2 4 a 14/; #model fits we are checking
- 
+
+# This script generates the GALFIT input files and scripts to mass execute them for the postamp and model images.
+# Note that the model run will require additional inputs later in the the script if you want it to execute properly.
+
+my @galaxy_fits = qw/1 2 4 a 14/; #model fits we are checking
+
 #MASK_INPUT.csv will need to be changed on a per-image basis (at the moment?)
 open my $inGalPositions, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
 my $positions = Text::CSV->new({'binary'=>1});
