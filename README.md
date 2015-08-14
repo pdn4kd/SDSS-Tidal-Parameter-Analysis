@@ -77,7 +77,7 @@ Exact order:
 	9. GALFIT_MBATCH.sh
 	10. Tidal_Model_Tc.pl
 
-Limitations of the scripts matching/cuts, and galfits fitting abilities result in a leaky pipeline. Not all images will make it through to the final results.
+Limitations of the scripts' matching/cuts, and galfit's fitting abilities result in a leaky pipeline. Not all images will make it through to the final results. (And even fewer get through the extra data analysis steps for reasons that are unclear)
 
 ## Example query:
 ```
