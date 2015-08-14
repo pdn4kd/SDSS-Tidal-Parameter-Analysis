@@ -3,7 +3,7 @@ use strict;
 use warnings;
 #use PGPLOT;
 use Text::CSV;
-use Cwd qw(cwd);
+#use Cwd qw(cwd);
 #use String::Scanf;
 #use Statistics::OLS;
 use PDL;
@@ -13,70 +13,69 @@ use PDL;
 #$ENV{PGPLOT_BACKGROUND} = "white";
 #use Cwd;
 #my $dir = getcwd;
- 
- my @galaxy_fits = qw/1 2 4 a 14/; #model fits we are checking
- 
+
+# This script generates the GALFIT input files and scripts to mass execute them for the postamp and model images.
+# Note that the model run will require additional inputs later in the the script if you want it to execute properly.
+
+my @galaxy_fits = qw/1 2 4 a 14/; #model fits we are checking
+
 #MASK_INPUT.csv will need to be changed on a per-image basis (at the moment?)
-open my $inGalPositions, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!"; #Change the input to your input file with the galaxy coordinates
+open my $inGalPositions, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!";
 my $positions = Text::CSV->new({'binary'=>1});
 $positions->column_names($positions->getline($inGalPositions));
 my $position = $positions->getline_hr_all($inGalPositions);
-
 my @nyuID = map {$_->{'col0'}} @{$position};
 my @ZPR = map {$_->{'Zero_point_r'}} @{$position};
 my @bkg = map {$_->{'global_background_r'}+1000} @{$position};
 
-	
 open my $galfit_batch, '>', "GALFIT_BATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
 open my $mgalfit_batch, '>', "GALFIT_MBATCH_DR7.sh" or die "cannot open GALFIT_BATCH_DR7.sh: $!";
 #system("/usr/bin/perl $dir/BACKGROUND_REPLACER_DR7.pl");
 foreach my $galCount (0 .. scalar @nyuID - 1) {
-if ((-e "p${nyuID[$galCount]}_DR7.fits") && (-e "p${nyuID[$galCount]}_DR7.aper.csv")) {
-my $Good_values = rfits("background.p$nyuID[$galCount]_DR7.fits");
-my $average = sprintf("%.3f",(avg($Good_values)));
-print $average,"\n";
-	
-print "background.p${nyuID[$galCount]}_DR7.fits\n";	
-open my $inPositions, '<', "p$nyuID[$galCount]_DR7.galfit_input.csv" or die "cannot open p$nyuID[$galCount]_DR7.galfit_input.csv: $!";
-my $input_positions = Text::CSV->new({'binary'=>1});
-$input_positions->column_names($input_positions->getline($inPositions));
-my $position_inputs = $input_positions->getline_hr_all($inPositions);
+	if (-e "background.p${nyuID[$galCount]}_DR7.fits") {
+		my $Good_values = rfits("background.p$nyuID[$galCount]_DR7.fits");
+		my $average = sprintf("%.3f",(avg($Good_values)));
+		print $average,"\n";
+		print "background.p${nyuID[$galCount]}_DR7.fits\n";	
+		open my $inPositions, '<', "p$nyuID[$galCount]_DR7.galfit_input.csv" or die "cannot open p$nyuID[$galCount]_DR7.galfit_input.csv: $!";
+		my $input_positions = Text::CSV->new({'binary'=>1});
+		$input_positions->column_names($input_positions->getline($inPositions));
+		my $position_inputs = $input_positions->getline_hr_all($inPositions);
 
-foreach my $galaxy_fits (@galaxy_fits) { #iterate over all fit types
-	print $galfit_batch "galfit p$nyuID[$galCount]_DR7.galfit_$galaxy_fits\n";
-	print $galfit_batch "mv galfit.01 p$nyuID[$galCount]_DR7.galfit_$galaxy_fits.out\n";
-	print $mgalfit_batch "galfit mp$nyuID[$galCount]_DR7.galfit_$galaxy_fits\n";
-	print $mgalfit_batch "mv galfit.01 mp$nyuID[$galCount]_DR7.galfit_$galaxy_fits.out\n";
-	}
+		foreach my $galaxy_fits (@galaxy_fits) { #iterate over all fit types
+			print $galfit_batch "galfit p$nyuID[$galCount]_DR7.galfit_$galaxy_fits\n";
+			print $galfit_batch "mv galfit.01 p$nyuID[$galCount]_DR7.galfit_$galaxy_fits.out\n";
+			print $mgalfit_batch "galfit mp$nyuID[$galCount]_DR7.galfit_$galaxy_fits\n";
+			print $mgalfit_batch "mv galfit.01 mp$nyuID[$galCount]_DR7.galfit_$galaxy_fits.out\n";
+			}
 
-my @N = map {$_->{'NUMBER'}} @{$position_inputs}; #mag
-my @mag = map {$_->{'MAG'}} @{$position_inputs}; #mag
-my @Re = map {$_->{'Re'}} @{$position_inputs}; #RE
-my @px = map {$_->{'X'}} @{$position_inputs}; 
-my @py = map {$_->{'Y'}} @{$position_inputs};
-my @X = map {$_->{'sizex'}} @{$position_inputs};
-my @Y = map {$_->{'sizey'}} @{$position_inputs};
-my @THETA_IMAGE = map {$_->{'THETA'}} @{$position_inputs};
-my @ba = map {$_->{'ba'}} @{$position_inputs};
-my @fit = map {$_->{'fit'}} @{$position_inputs};
-my @type = map {$_->{'type'}} @{$position_inputs};
+		my @N = map {$_->{'NUMBER'}} @{$position_inputs}; #mag
+		my @mag = map {$_->{'MAG'}} @{$position_inputs}; #mag
+		my @Re = map {$_->{'Re'}} @{$position_inputs}; #RE
+		my @px = map {$_->{'X'}} @{$position_inputs}; 
+		my @py = map {$_->{'Y'}} @{$position_inputs};
+		my @X = map {$_->{'sizex'}} @{$position_inputs};
+		my @Y = map {$_->{'sizey'}} @{$position_inputs};
+		my @THETA_IMAGE = map {$_->{'THETA'}} @{$position_inputs};
+		my @ba = map {$_->{'ba'}} @{$position_inputs};
+		my @fit = map {$_->{'fit'}} @{$position_inputs};
+		my @type = map {$_->{'type'}} @{$position_inputs};
 
-foreach my $posCount (0 .. scalar @N - 1)
-{
-	open my $galfit1, '>', "p$nyuID[$galCount]_DR7.galfit_1" or die "cannot open p$nyuID[$galCount]_DR7.galfit_1 $!"; #GALFIT Normal Galaxy (n=1)
-	open my $mgalfit1, '>', "mp$nyuID[$galCount]_DR7.galfit_1" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_1 $!"; #GALFIT Normal Galaxy model (n=1)
+		foreach my $posCount (0 .. scalar @N - 1) {
+			open my $galfit1, '>', "p$nyuID[$galCount]_DR7.galfit_1" or die "cannot open p$nyuID[$galCount]_DR7.galfit_1 $!"; #GALFIT Normal Galaxy (n=1)
+			open my $mgalfit1, '>', "mp$nyuID[$galCount]_DR7.galfit_1" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_1 $!"; #GALFIT Normal Galaxy model (n=1)
 
-	open my $galfit2, '>', "p$nyuID[$galCount]_DR7.galfit_2" or die "cannot open p$nyuID[$galCount]_DR7.galfit_2 $!"; #GALFIT Normal Galaxy (n=2)
-	open my $mgalfit2, '>', "mp$nyuID[$galCount]_DR7.galfit_2" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_2 $!"; #GALFIT Normal Galaxy model (n=2)
-	open my $galfit4, '>', "p$nyuID[$galCount]_DR7.galfit_4" or die "cannot open p$nyuID[$galCount]_DR7.galfit_4 $!"; #GALFIT Normal Galaxy (n=4)
-	open my $mgalfit4, '>', "mp$nyuID[$galCount]_DR7.galfit_4" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_4 $!"; #GALFIT Normal Galaxy model (n=4)
-	open my $galfita, '>', "p$nyuID[$galCount]_DR7.galfit_a" or die "cannot open p$nyuID[$galCount]_DR7.galfit_a $!"; #GALFIT Normal Galaxy (n=anything)
-	open my $mgalfita, '>', "mp$nyuID[$galCount]_DR7.galfit_a" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_a $!"; #GALFIT Normal Galaxy model (n=anything)
+			open my $galfit2, '>', "p$nyuID[$galCount]_DR7.galfit_2" or die "cannot open p$nyuID[$galCount]_DR7.galfit_2 $!"; #GALFIT Normal Galaxy (n=2)
+			open my $mgalfit2, '>', "mp$nyuID[$galCount]_DR7.galfit_2" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_2 $!"; #GALFIT Normal Galaxy model (n=2)
+			open my $galfit4, '>', "p$nyuID[$galCount]_DR7.galfit_4" or die "cannot open p$nyuID[$galCount]_DR7.galfit_4 $!"; #GALFIT Normal Galaxy (n=4)
+			open my $mgalfit4, '>', "mp$nyuID[$galCount]_DR7.galfit_4" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_4 $!"; #GALFIT Normal Galaxy model (n=4)
+			open my $galfita, '>', "p$nyuID[$galCount]_DR7.galfit_a" or die "cannot open p$nyuID[$galCount]_DR7.galfit_a $!"; #GALFIT Normal Galaxy (n=anything)
+			open my $mgalfita, '>', "mp$nyuID[$galCount]_DR7.galfit_a" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_a $!"; #GALFIT Normal Galaxy model (n=anything)
 
-	open my $galfit14, '>', "p$nyuID[$galCount]_DR7.galfit_14" or die "cannot open p$nyuID[$galCount]_DR7.galfit_14 $!"; #GALFIT 2 component Normal Galaxy (n=1 disk, n=4 bulge)
-	open my $mgalfit14, '>', "mp$nyuID[$galCount]_DR7.galfit_14" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_14 $!"; #GALFIT 2 component Normal Galaxy model (n=1 disk, n=4 bulge)
+			open my $galfit14, '>', "p$nyuID[$galCount]_DR7.galfit_14" or die "cannot open p$nyuID[$galCount]_DR7.galfit_14 $!"; #GALFIT 2 component Normal Galaxy (n=1 disk, n=4 bulge)
+			open my $mgalfit14, '>', "mp$nyuID[$galCount]_DR7.galfit_14" or die "cannot open mp$nyuID[$galCount]_DR7.galfit_14 $!"; #GALFIT 2 component Normal Galaxy model (n=1 disk, n=4 bulge)
 
-print $galfit1  <<___end___;
+			print $galfit1  <<___end___;
 ================================================================================
 # IMAGE and GALFIT CONTROL PARAMETERS
 A) MASKED.p$nyuID[$galCount]_DR7.fits      # Input data image (FITS file)
@@ -429,8 +428,8 @@ P) 0                   # Choose: 0=optimize, 1=model, 2=imgblock, 3=subcomps
 # ------------------------------------------------------------------------------
 ___end___
 
-foreach my $posCount (0 .. scalar @N - 1)
-{
+
+foreach my $posCount (0 .. scalar @N - 1) {
 print $galfit1  <<___end___;
 # Component number: $N[$posCount]
  0) $type[$posCount]         #  Component type
@@ -729,13 +728,13 @@ print $mgalfit14 <<___end___;
  Z) 0                      #  Skip this model in output image?  (yes=1, no=0)
 ================================================================================
 ___end___
-
-}
+		}
+	}
 #system ("rm $dir/galfit.* ");
 #system ("/usr/local/bin/galfit $dir/p$nyuID[$galCount]_DR7.galfit_1");
 #system ("mv galfit.01 $dir/");
 #print "Finished p$nyuID[$galCount].fits\n";	
 
 }
-}
+
 print "Done";
