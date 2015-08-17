@@ -1,19 +1,19 @@
+#! usr/bin/perl
 use strict;
 use warnings;
-use PGPLOT;
+#use PGPLOT;
 use PDL;
-use PDL::Graphics::PGPLOT;
-use PDL::Graphics2D;
+#use PDL::Graphics::PGPLOT;
+#use PDL::Graphics2D;
 use PDL::Image2D;
-$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
-$ENV{'PGPLOT_DEV'} = '/xs';
+#$ENV{'PGPLOT_DIR'} = '/usr/local/pgplot';
+#$ENV{'PGPLOT_DEV'} = '/xs';
 use Text::CSV;
-use PDL::Image2D;
 #use Astro::IRAF::CL;
-use Cwd qw(cwd);
+#use Cwd qw(cwd);
 #use PDL::GSL::RNG;
-use Cwd;
-my $dir = getcwd;
+#use Cwd;
+#my $dir = getcwd;
  
 my @galaxy_fits = qw/1 2 4 a 14/;
 open my $inPositions, '<', "result_S82.csv" or die "cannot open result_S82.csv: $!";
@@ -49,7 +49,6 @@ my @GAL_e = map {$_->{'axisRatio'}} @{$position_inputs_1};
 my @GAL_theta = map {$_->{'PosAng'}} @{$position_inputs_1};
 
 open my $file_in1, '<', "p${nyuID[$posCount]}_S82.aper.csv" or die "Unable to p${nyuID[$posCount]}_S82.aper.csv: $!\n";
-
 my $input_positions_2 = Text::CSV->new({'binary'=>1});
 $input_positions_2->column_names($input_positions_2->getline($file_in1));
 my $position_inputs_2 = $input_positions_2->getline_hr_all($file_in1);
@@ -59,7 +58,6 @@ my @SEX_y = map {$_->{'Y_IMAGE'}} @{$position_inputs_2};
 my @SEX_MAG = map {$_->{'MAG_AUTO'}} @{$position_inputs_2};
 my @SEX_MAGErr = map {$_->{'MAGERR_AUTO'}} @{$position_inputs_2};
 my @Kron = map {$_->{'KRON_RADIUS'}} @{$position_inputs_2};
-
 my @SEX_e = map {$_->{'ELLIPTICITY'}} @{$position_inputs_2};
 my @SEX_theta = map {$_->{'THETA_IMAGE'}} @{$position_inputs_2};
 
