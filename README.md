@@ -89,7 +89,8 @@ JOIN PhotoObjAll p ON x.objID=p.objID
 JOIN Field f ON p.fieldID = f.fieldID  
 ORDER BY x.up_id
 ```
-(for Stripe 82, add WHERE (p.run = 106 or p.run = 206) and (p.type = 3) )
+for Stripe 82, add WHERE (p.run = 106 or p.run = 206) and (p.type = 3)
+Note that Stripe 82's object catalog seems to have issues when compared with the general Data Release 7, so selecting a broader option (eg: All Nearby Primary Objects instead of Nearest Primary Object) may be required.
 
 ## Data Analysis:
 GALFIT_OUTPUT_READER.pl and GALFIT_PARAMETERS.pl generate measures of fit quality. Run in that order to get CSVs of each cutout/fit, and then an overall listing (Del_parameters.csv).
