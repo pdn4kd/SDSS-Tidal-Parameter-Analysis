@@ -19,7 +19,6 @@ use PDL::Transform;
 #$ENV{'PGPLOT_DEV'} = '/xs';
 
 #This script generates a segmentation mask for the galaxies.
-#Todo, make it generate the (master-mask like) galfit seed CSVs.
 open my $SEX, '<', "result_DR7.csv" or die "cannot open result_DR7.csv: $!";
 my $inp = Text::CSV->new({'binary'=>1});
 $inp->column_names($inp->getline($SEX));
@@ -114,8 +113,10 @@ foreach my $posCount (0 .. scalar @ID - 1) {
 					print $Maker "imcopy p${ID[$posCount]}_DR7.seg.fits p${ID[$posCount]}_DR7.mask_1a.fits\n"; #make mask_1a for GALFIT 1=bad 0= good
 					print $Maker "imcopy p${ID[$posCount]}_DR7.seg.fits p${ID[$posCount]}_DR7.mask_1b.fits\n"; #Make masking image 1=good 0=bad
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to GALFit = 0
-					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to 1
-
+					if ($N[$sexCount] != 1) { #we have to jump through some hoops for the mask_1b to work.
+						print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =9999 lower=1 upper=1\n"; #change extraneous bright source to something excessive that will become 0.
+						print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1b.fits value =1 lower=$N[$sexCount] upper=$N[$sexCount]\n"; #change galaxy to 1
+						}
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1a.fits value =1 lower=1 upper=INDEF\n";
 					print $Maker "imreplace p${ID[$posCount]}_DR7.mask_1a.fits value =0 lower=-99 upper=0\n";
 
