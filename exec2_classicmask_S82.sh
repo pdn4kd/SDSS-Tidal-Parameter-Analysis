@@ -7,8 +7,8 @@ chmod 755 haper_S82.sh
 ./haper_S82.sh
 perl HAPER_To_CSV.pl
 perl MASTER_MASK_S82.pl
-perl HOT_MASK1_S82.pl
 perl COLD_MASK1_S82.pl
+perl HOT_MASK1_S82.pl
 perl BACKGROUND_REPLACER_S82.pl
 perl GALFIT_INPUTS_S82.pl
 rm galfit.*
