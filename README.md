@@ -45,8 +45,13 @@ SExtractor II
 * haper_all.sh
 * HAPER_to_CSV.pl
 
-Masking/GALFIT setup
-* MASTER_MASK.pl (runs cold/hot/tidal/Galfit_inputs.pl)
+Masking/GALFIT setup (GALAPAGOS masking)
+* MASTER_MASK.pl (creates CSVs that later scripts will need)
+* COLD_MASK1.pl
+* HOT_MAST1.pl
+* BACKGROUND_REPLACER.pl
+* GALFIT_INPUTS.pl
+* Tidal_mask.pl (not really needed until you want to calculate Tp)
 * GALFIT_BATCH.sh
 Tp
 * Critical_Tidal_Parameter.pl
