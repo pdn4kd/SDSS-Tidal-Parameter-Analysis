@@ -51,13 +51,10 @@ foreach my $posCount (0 .. scalar @nyuID - 1) {
 		#join(',',@dim)
 		my $size_x = $dim[0];
 		my $size_y = $dim[1];
-		print "This image is $size_x x $size_y pixels";
-		print "\n";
+		print "This image is $size_x x $size_y pixels\n";
 
 		#------------------------
 		my $e; #eccentricity
-		my $nx_pix;
-		my $ny_pix;
 		my $r_a;
 		my $r_b;
 		my $THETA;
@@ -70,16 +67,14 @@ foreach my $posCount (0 .. scalar @nyuID - 1) {
 
 		foreach my $Count (0 .. scalar @Kron - 1) {
 			$e = (1-((($B[$Count])**2)/(($A[$Count])**2)))**.5;
-			$nx_pix = $X[$Count];
-			$ny_pix = $Y[$Count];
 			$THETA = $deg2rad * -$THETA[$Count];
 			$K = $Kron[$Count];
 	
 			$r_a = 2.5 * $K * $A[$Count];
 			$r_b = 2.5 * $K * $B[$Count];
 
-			my $new_x = $x - $nx_pix;
-			my $new_y = $y - $ny_pix;
+			my $new_x = $x - $X[$Count];
+			my $new_y = $y - $Y[$Count];
 
 			my $r_x = $new_x * cos(($THETA)) - $new_y * sin(($THETA));
 			my $r_y = $new_x * sin(($THETA)) + $new_y * cos(($THETA));

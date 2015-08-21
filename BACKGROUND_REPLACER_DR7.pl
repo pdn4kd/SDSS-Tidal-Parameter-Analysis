@@ -50,16 +50,12 @@ my $image = rfits("p${nyuID[$posCount]}_DR7.fits");
 #$normal->fits_imag($image);
 my @dim = dims($image);
 print join(',',@dim),"\n";
-#join(',',@dim)
 my $size_x = $dim[0];
 my $size_y = $dim[1];
 print "This image is $size_x x $size_y pixels";
 print "\n";
 
-#------------------------
 my $e; #eccentricity
-my $nx_pix;
-my $ny_pix;
 my $r_a;
 my $r_b;
 my $THETA;
@@ -70,19 +66,16 @@ my $y = yvals(float(),$size_x,$size_y)+1;
 my $ellipse = zeroes($size_x,$size_y);
 my $ellipse_2 = ones($size_x,$size_y);
 
-foreach my $Count (0 .. scalar @Kron - 1)
-	{
+foreach my $Count (0 .. scalar @Kron - 1) {
 	$e = (1-((($B[$Count])**2)/(($A[$Count])**2)))**.5;
-	$nx_pix = $X[$Count];
-	$ny_pix = $Y[$Count];
 	$THETA = $deg2rad * -$THETA[$Count];
 	$K = $Kron[$Count];
 	
 	$r_a = 2.5 * $K * $A[$Count];
 	$r_b = 2.5 * $K * $B[$Count];
 
-	my $new_x = $x - $nx_pix;
-	my $new_y = $y - $ny_pix;
+	my $new_x = $x - $X[$Count];
+	my $new_y = $y - $Y[$Count];
 
 	my $r_x = $new_x * cos(($THETA)) - $new_y * sin(($THETA));
 	my $r_y = $new_x * sin(($THETA)) + $new_y * cos(($THETA));
@@ -96,7 +89,6 @@ foreach my $Count (0 .. scalar @Kron - 1)
 	$tmp_2->where($tmp_2<=1) .= 0; #this is for our image we will use in GALFIT bad values are 0
 	$tmp_2->where($tmp_2>1) .= 1;
 	$ellipse_2 &= $tmp_2;
-	
 	}
 
 $ellipse->sethdr($image->hdr);
@@ -134,5 +126,5 @@ print $average,"\n";
 ##Display background image
 #my $backimage = PDL::Graphics2D->new('PGPLOT', {'device' => '/xs'});
 #$backimage->fits_imag($Good_values);
-}
+	}
 }
