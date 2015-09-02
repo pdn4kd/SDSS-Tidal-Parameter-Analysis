@@ -74,15 +74,20 @@ Exact order:
 	1. exec0.sh
 	2. Rename_Atlas.cl, Rename_Objects.cl (IRAF), PSF.cl (IRAF) (processes PSFs)
 	3. exec1.sh
-	4. cutouts in IRAF
-	5. exec2.sh
+	4. cutouts (in IRAF)
+	5. exec2_classicmask.sh
 	6. GALFIT_BATCH.sh
 	7. Critical_Tidal_Parameter.pl
-	8. noise.cl (IRAF)
+	8. noise.cl (in IRAF)
 	9. GALFIT_MBATCH.sh
 	10. Tidal_Model_Tc.pl
 
 Limitations of the scripts' matching/cuts, and galfit's fitting abilities result in a leaky pipeline. Not all images will make it through to the final results. (And even fewer get through the extra data analysis steps for reasons that are unclear)
+
+Currently an alternate route using segmentation masking also exists. Instead of step 5:
+	5a. exec2_segmask.sh
+	5b. Mask_maker.cl (in IRAF)
+	5c. exec3_segmask.sh
 
 ## Example query:
 ```
