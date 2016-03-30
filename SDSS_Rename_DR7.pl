@@ -63,7 +63,7 @@ for (grep {$_->{'col0'}} @{$position_inputs}) {
 	#run line padding -- 6 digit field but the run number is 1 to 4 digits. (2-5 zeros of padding)
 	if ($runN > 999) {
 		$run0 = "00";
-	} elsif ($runN > 999) {
+	} elsif ($runN > 99) {
 		$run0 = "000";
 	} elsif ($runN > 9) {
 		$run0 = "0000";
