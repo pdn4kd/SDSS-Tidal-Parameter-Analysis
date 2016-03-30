@@ -9,6 +9,17 @@ Perl dependencies: OpenGL Text::CSV PDL Math::Trig (semi-required: PGPlot(if deb
 Additional executables: read_PSF, GALFIT, SExtractor. You'll want to make them executable like system files.
 3rd party software: [IRAF](http://iraf.noao.edu/) (and by extension xgterm). [SAOImage DS9](http://ds9.si.edu/site/Home.html), while not strictly required, is still useful.
 
+## Required information/columns
+col0: Some sort of ID (*PER_to_CSV.pl assume that it starts with "nyu" and will need to be modified if your scheme does not. The other files should be more agnostic)
+
+imgx/imgy: object location within an image. (in principle findable with a reworked pipeline. Here we use known galaxies from the NYU-VAGC)
+
+run/camcol/field: These are related to filenames within SDSS.
+
+Zero_point_r: r-band zero-point
+
+gain_r: image gain (ADU per electron) in r-band
+
 ## Specific workflow:
 
 Enter SQL query & object list
