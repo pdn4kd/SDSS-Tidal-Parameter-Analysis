@@ -5,7 +5,9 @@ Finding tidal parameters of SDSS galaxies via sérsic fits. Derived from Xia's c
 tophat_4.0_5x5.conv, default.nnw, and test1.param provide additional information the scripts need to run, but you may be able to swap them out, depending on available libraries. All 3 (and other options if you're fitting galaxies from a different imaging system) should be included with a [Source Extractor](http://www.astromatic.net/software/sextractor) install.
 
 read_PSF is also required, but not included (it's an executable). [Download/compile](http://classic.sdss.org/dr7/products/images/read_psf.html) [from SDSS](http://classic.sdss.org/dr7/products/images/read_psf.html). If you have IDL access, [SDSS has additional related utilities.](https://code.google.com/p/sdssidl/)
-Perl dependencies: OpenGL Text::CSV PDL Math::Trig (semi-required: PGPlot(if debug images enabled), Cwd, Statistics, List, Astro::FITS:Header)
+
+Perl dependencies: OpenGL Text::CSV PDL Math::Trig (semi-required: PGPlot(if debug images enabled), Cwd, Statistics, List, Astro::FITS:Header). Everything except PGPlot (which you can and should avoid) is available on CKAN.
+
 Additional executables: read_PSF (see above), [GALFIT](https://users.obs.carnegiescience.edu/peng/work/galfit/galfit.html), SExtractor (see above). You'll want to make them executable like system files.
 3rd party software: [IRAF](http://iraf.noao.edu/) (and by extension xgterm). [SAOImage DS9](http://ds9.si.edu/site/Home.html), while not strictly required, is still useful.
 
@@ -75,43 +77,43 @@ Tp
 * Tidal_Model_Tc.pl
 
 In general:
-1. Software setup
-2. Download CSV/FITS
-3. Rename/download PSF
-4. Postage stamps
-5. SExtractor
-6. Mask
-7. GALFIT
-8. Tidal analysis
+ 1. Software setup
+ 2. Download CSV/FITS
+ 3. Rename/download PSF
+ 4. Postage stamps
+ 5. SExtractor
+ 6. Mask
+ 7. GALFIT
+ 8. Tidal analysis
 
 Exact order:
-0. SQL queries
-1. exec0.sh
-2. Rename_Atlas.cl, Rename_Objects.cl (IRAF), PSF.cl (IRAF) (processes PSFs)
-3. exec1.sh
-4. cutouts (in IRAF)
-5. exec2_classicmask.sh
-6. GALFIT_BATCH.sh
-7. Critical_Tidal_Parameter.pl
-8. noise.cl (in IRAF)
-9. GALFIT_MBATCH.sh
-10. Tidal_Model_Tc.pl
+ 0. SQL queries
+ 1. exec0.sh
+ 2. Rename_Atlas.cl, Rename_Objects.cl (IRAF), PSF.cl (IRAF) (processes PSFs)
+ 3. exec1.sh
+ 4. cutouts (in IRAF)
+ 5. exec2_classicmask.sh
+ 6. GALFIT_BATCH.sh
+ 7. Critical_Tidal_Parameter.pl
+ 8. noise.cl (in IRAF)
+ 9. GALFIT_MBATCH.sh
+ 10. Tidal_Model_Tc.pl
 
 Limitations of the scripts' matching/cuts, and galfit's fitting abilities result in a leaky pipeline. Not all images will make it through to the final results. (And even fewer get through the extra data analysis steps for reasons that are unclear)
 
 Currently an alternate route using segmentation masking also exists. Instead of step 5:
-5a. exec2_segmask.sh
-5b. Mask_maker.cl (in IRAF)
-5c. exec3_segmask.sh
+ 5a. exec2_segmask.sh
+ 5b. Mask_maker.cl (in IRAF)
+ 5c. exec3_segmask.sh
 
 The "most advanced" alternate route is using segmentation masking with the cutout sizes and masks applied from Stripe 82 to both Stripe 82 and Data Release 7. This version also cuts out the extra renaming step, is the most heavily automated, and at present requires pulling in the files from the Tidal_Parameter_Mask repository.
-1. exec01.sh
-2. cutouts (PSF_Cut, Galaxy_cut) in IRAF
-3. exec2_Segmask.sh (No DR7/S82 data release!)
-4. Mask_Maker.cl (in IRAF)
-5. exec3.sh (No data release!)
-6. NOISE.cl (in IRAF)
-7. exec4.sh
+ 1. exec01.sh
+ 2. cutouts (PSF_Cut, Galaxy_cut) in IRAF
+ 3. exec2_Segmask.sh (No DR7/S82 data release!)
+ 4. Mask_Maker.cl (in IRAF)
+ 5. exec3.sh (No data release!)
+ 6. NOISE.cl (in IRAF)
+ 7. exec4.sh
 
 ## Example query:
 ```
