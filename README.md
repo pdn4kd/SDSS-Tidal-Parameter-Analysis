@@ -16,7 +16,7 @@ col0: Some sort of ID (*PER_to_CSV.pl assume that it starts with "nyu" and will 
 
 imgx/imgy: object location within an image. (in principle findable with a reworked pipeline. Here we use known galaxies from the NYU-VAGC)
 
-run/camcol/field: These are related to filenames within SDSS.
+run/rerun/camcol/field: These are related to filenames within SDSS.
 
 Zero_point_r: r-band zero-point. Query includes k-correction and airmass.
 
